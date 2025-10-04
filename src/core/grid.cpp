@@ -1,1 +1,47 @@
 #include "grid.hpp"
+
+Grid::Grid(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood)
+  : width_(width), height_(height), boundary_(boundary), neighborhood_(neighborhood) {
+  cells_.resize(width * height, default_state);
+}
+
+void Grid::step(const Rule& rule) {
+  new_cells_ = cells_;
+  for (std::size_t y = 0; y < height_; ++y) {
+    for (std::size_t x = 0; x < width_; ++x) {
+      std::vector<uint8_t> neighbors = getNeighbors(x, y);
+      uint8_t current_state = cells_[idx(x, y, width_)];
+      new_cells_[idx(x, y, width_)] = rule.apply(current_state, neighbors);
+    }
+  }
+  cells_ = new_cells_;
+}
+
+void Grid::setCell(std::size_t x, std::size_t y, uint8_t state) {
+  if (x < width_ && y < height_) {
+    cells_[idx(x, y, width_)] = state;
+  }
+}
+
+uint8_t Grid::getCell(std::size_t x, std::size_t y) const {
+  if (x < width_ && y < height_) {
+    return cells_[idx(x, y, width_)];
+  }
+  return 0; // or some error value
+}
+
+std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
+  std::vector<uint8_t> neighbors;
+  // TODO: add switch for different neighborhood types (for now only one will be implemented)
+  
+  // we always want to take the points anticlockwise from the top 
+  int dxs[8] = {0, -1, -1, -1, 0, 1, 1, 1};
+  int dys[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+  for (int i = 0; i < 8; ++i) {
+    std::size_t nx = (x + dxs[i] + width_) % width_;
+    std::size_t ny = (y + dys[i] + height_) % height_;
+    neighbors.push_back(cells_[idx(nx, ny, width_)]);
+  }
+  return neighbors;
+}
+

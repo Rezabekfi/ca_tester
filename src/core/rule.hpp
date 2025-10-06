@@ -8,6 +8,6 @@
 class Rule {
 public:
   virtual ~Rule() = default;
-  virtual uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours ) const;
+  virtual uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours ) const = 0;
   
 };

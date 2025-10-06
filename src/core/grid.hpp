@@ -34,6 +34,9 @@ public:
   void setCell(std::size_t x, std::size_t y, uint8_t state);
   uint8_t getCell(std::size_t x, std::size_t y) const;
 
+  std::vector<uint8_t> getGridValues() const;
+
+  void setGridValues(const std::vector<uint8_t>& new_grid_values);
 
   ~Grid() = default;
   

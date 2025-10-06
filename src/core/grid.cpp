@@ -30,6 +30,16 @@ uint8_t Grid::getCell(std::size_t x, std::size_t y) const {
   return 0; // or some error value
 }
 
+std::vector<uint8_t> Grid::getGridValues() const {
+  return cells_;
+}
+
+void Grid::setGridValues(const std::vector<uint8_t>& values) {
+  if (values.size() == cells_.size()) {
+    cells_ = values;
+  }
+}
+
 std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
   std::vector<uint8_t> neighbors;
   // TODO: add switch for different neighborhood types (for now only one will be implemented)
@@ -38,6 +48,7 @@ std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
   int dxs[8] = {0, -1, -1, -1, 0, 1, 1, 1};
   int dys[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
   for (int i = 0; i < 8; ++i) {
+    // wrap for all for now
     std::size_t nx = (x + dxs[i] + width_) % width_;
     std::size_t ny = (y + dys[i] + height_) % height_;
     neighbors.push_back(cells_[idx(nx, ny, width_)]);

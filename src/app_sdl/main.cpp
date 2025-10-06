@@ -3,10 +3,29 @@
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_sdlrenderer2.h>
 #include <stdio.h>
+#include "core/engine.hpp"
+#include "core/rules_conway.hpp"
+#include <iostream>
 
 // for now just a simple window created by chat for testing if setup works
 int main(int, char**)
 {
+  {
+    ConwayRule rule;
+    Engine engine(100, 100, rule);
+    engine.toggleRunning();
+    while (engine.getIteration() < 1000) {
+      SDL_Delay(100); // Sleep for 100 milliseconds
+    }
+  }
+  return 0;
+
+
+
+
+
+
+
     // 1. Initialize SDL2
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         printf("Error: %s\n", SDL_GetError());

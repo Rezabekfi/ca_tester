@@ -38,6 +38,8 @@ public:
 
   void setGridValues(const std::vector<uint8_t>& new_grid_values);
 
+  std::size_t getWidth() const;
+
   ~Grid() = default;
   
 private:

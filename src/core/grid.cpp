@@ -40,6 +40,10 @@ void Grid::setGridValues(const std::vector<uint8_t>& values) {
   }
 }
 
+std::size_t Grid::getWidth() const {
+  return width_;
+}
+
 std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
   std::vector<uint8_t> neighbors;
   // TODO: add switch for different neighborhood types (for now only one will be implemented)

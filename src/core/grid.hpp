@@ -5,16 +5,34 @@
 #include <vector>
 #include "rule.hpp"
 
-// Different boundary conditions for the grid
-// INFO: Few of those wont be implemented at first (will most likely opt into default which is wrap)
 enum class Boundary : uint8_t {
-  Wrap, Reflect, Clamp, Zero, One
+  Wrap, Reflect, Clamp, Zero, One, Count
 };
+// IDK this looks ugly... TODO: take a look at this
+// boundary to string
+inline const char* boundaryToString(Boundary b) {
+  switch (b) {
+    case Boundary::Wrap: return "Wrap";
+    case Boundary::Reflect: return "Reflect";
+    case Boundary::Clamp: return "Clamp";
+    case Boundary::Zero: return "Zero";
+    case Boundary::One: return "One";
+    default: return "Unknown";
+  }
+}
 
 enum class Neighborhood : uint8_t {
-  Moore, VonNeumann
+  Moore, VonNeumann, Count
 };
 
+// neighborhood to string
+inline const char* neighborhoodToString(Neighborhood n) {
+  switch (n) {
+    case Neighborhood::Moore: return "Moore";
+    case Neighborhood::VonNeumann: return "Von Neumann";
+    default: return "Unknown";
+  }
+}
 
 inline std::size_t idx(std::size_t x, std::size_t y, std::size_t width) {
   return y * width + x;
@@ -34,11 +52,17 @@ public:
   void setCell(std::size_t x, std::size_t y, uint8_t state);
   uint8_t getCell(std::size_t x, std::size_t y) const;
 
-  std::vector<uint8_t> getGridValues() const;
+  const std::vector<uint8_t>& getGridValues() const;
 
   void setGridValues(const std::vector<uint8_t>& new_grid_values);
 
+  void resize(std::size_t new_width, std::size_t new_height);
+
+  void setBoundary(Boundary boundary);
+  void setNeighborhood(Neighborhood neighborhood);
+
   std::size_t getWidth() const;
+  std::size_t getHeight() const;
 
   ~Grid() = default;
   

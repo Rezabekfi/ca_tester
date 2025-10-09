@@ -12,3 +12,7 @@ uint8_t ConwayRule::apply(uint8_t current_state, std::vector<uint8_t> neighbours
     return (alive_count == 3) ? 1 : 0;
   }
 }
+
+std::string ConwayRule::getName() const {
+  return CONWAY_RULE_NAME;
+}

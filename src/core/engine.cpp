@@ -19,7 +19,6 @@ void Engine::step() {
     grid_.step(rule_);
     history_.emplace_back(grid_.getGridValues());
   }
-  std::cout<<"Stepped to iteration " << iteration_.load(std::memory_order_relaxed) + 1 << std::endl;
   iteration_.fetch_add(1, std::memory_order_relaxed);
 }
 
@@ -99,3 +98,49 @@ void Engine::setGridValues(const std::vector<uint8_t>& new_grid_values) {
   grid_.setGridValues(new_grid_values);
   history_.emplace_back(new_grid_values);
 }
+
+bool Engine::goToIteration(std::size_t iteration) {
+  std::lock_guard<std::mutex> lock(mtx_);
+  if (iteration < history_.size()) {
+    grid_.setGridValues(history_[iteration]);
+    iteration_.store(iteration, std::memory_order_relaxed);
+    return true;
+  }
+  return false;
+}
+
+void Engine::stepBack(std::size_t steps) {
+  if (steps == 0) return;
+  if (steps > iteration_.load(std::memory_order_relaxed)) {
+    reset();
+  } else {
+    goToIteration(iteration_.load(std::memory_order_relaxed) - steps);
+  }
+}
+
+void Engine::resizeGrid(std::size_t new_width, std::size_t new_height) {
+  stop();
+  {
+    std::lock_guard<std::mutex> lock(mtx_);
+    grid_.resize(new_width, new_height);
+    history_.clear();
+    history_.emplace_back(grid_.getGridValues());
+    iteration_.store(0, std::memory_order_relaxed);
+  }
+}
+
+void Engine::setNeighborhood(Neighborhood neighborhood) {
+  std::lock_guard<std::mutex> lock(mtx_);
+  grid_.setNeighborhood(neighborhood);
+}
+
+void Engine::setBoundary(Boundary boundary) {
+  std::lock_guard<std::mutex> lock(mtx_);
+  grid_.setBoundary(boundary);
+}
+
+void Engine::setRule(const Rule& rule) {
+  std::lock_guard<std::mutex> lock(mtx_);
+  rule_ = rule;
+}
+

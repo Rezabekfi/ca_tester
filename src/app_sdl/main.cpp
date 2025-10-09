@@ -9,6 +9,9 @@
 #include <ctime>
 #include <algorithm> // std::clamp, std::min, std::max
 #include <cmath>     // std::floor, std::ceil
+#include "core/rules_conway.hpp"
+#include "core/engine.hpp"
+#include "renderer.hpp"
 
 // --- Grid widget: draw + interact
 // cells: rows*cols entries (0 or 1). Click toggles, drag paints. Shift+drag erases.
@@ -87,7 +90,7 @@ static bool GridWidget(const char* id, int rows, int cols, float cellSize,
                     changed = true;
                 }
             }
-
+ 
             // Optional hover highlight
             ImVec2 a(p0.x + col * cellSize + 1,       p0.y + row * cellSize + 1);
             ImVec2 b(p0.x + (col + 1) * cellSize - 1, p0.y + (row + 1) * cellSize - 1);
@@ -100,6 +103,19 @@ static bool GridWidget(const char* id, int rows, int cols, float cellSize,
 
 int main(int, char**)
 {
+  bool test = true;
+  if (test) {
+    ConwayRule rc;
+    Engine e(50, 30, rc);
+    Renderer r(e, 20);
+    
+    while (r.render()) {
+      // loop until window closed
+    }
+  }
+  return 0;
+
+
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER) != 0) return 1;
 
     SDL_Window* window = SDL_CreateWindow(

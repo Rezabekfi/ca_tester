@@ -26,6 +26,15 @@ public:
   const std::vector<uint8_t>& getStateAtIteration(std::size_t iteration);
   void setGridValues(const std::vector<uint8_t>& new_grid_values);
 
+  void setNeighborhood(Neighborhood neighborhood);
+  void setBoundary(Boundary boundary);
+  void setRule(const Rule& rule);
+
+  void stepBack(std::size_t steps = 1);
+  bool goToIteration(std::size_t iteration);
+
+  void resizeGrid(std::size_t new_width, std::size_t new_height);
+
   ~Engine() = default;
 
 private:

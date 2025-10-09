@@ -30,7 +30,7 @@ uint8_t Grid::getCell(std::size_t x, std::size_t y) const {
   return 0; // or some error value
 }
 
-std::vector<uint8_t> Grid::getGridValues() const {
+const std::vector<uint8_t>& Grid::getGridValues() const {
   return cells_;
 }
 
@@ -59,4 +59,23 @@ std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
   }
   return neighbors;
 }
+
+std::size_t Grid::getHeight() const {
+  return height_;
+}
+
+void Grid::resize(std::size_t new_width, std::size_t new_height) {
+  width_ = new_width;
+  height_ = new_height;
+  cells_.resize(new_width * new_height, 0);
+}
+
+void Grid::setBoundary(Boundary boundary) {
+  boundary_ = boundary;
+}
+
+void Grid::setNeighborhood(Neighborhood neighborhood) {
+  neighborhood_ = neighborhood;
+}
+
 

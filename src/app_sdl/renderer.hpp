@@ -1,17 +1,18 @@
 #pragma once
 
-#include <cstdint>
 #include <cstddef>
-#include <vector>
 #include "core/engine.hpp"
 #include <SDL.h>
+#include <imgui.h>
+#include <memory>
+
 
 
 class Renderer {
 public:
   Renderer(Engine& engine, std::size_t cell_size = 20);
   ~Renderer();
-  void render();
+  bool render();
 private:
   Engine& engine_;
   std::size_t cell_size_;
@@ -23,7 +24,13 @@ private:
   bool paused_;
   bool autosize_os_window_;
   std::size_t iteration_;
+  std::size_t iterations_per_step_;
+  std::size_t grid_rows_;
+  std::size_t grid_cols_;
+  Neighborhood neighborhood_;
+  Boundary boundary_;
 
+  // left as pointers because of SDL
   SDL_Window* window_ = nullptr;
   SDL_Renderer* sdl_renderer_ = nullptr;
 
@@ -32,6 +39,15 @@ private:
   void renderControls();
   void renderGrid();
   void renderSplitter();
+  void renderGridSettings();
+  void renderNeighborhoodSettings();
+  void renderBoundarySettings();
+  void renderRuleSettings();
+  void renderCustomRuleEditor(); 
+  void renderAbout();
+
+
+  bool drawGrid(float line_thickness = 1.0f, ImU32 gridColor = IM_COL32(50, 50, 50, 255), ImU32 fillColor = IM_COL32(200, 200, 200, 255));
 
   // More private methods will be added as I figure out what is needed
 

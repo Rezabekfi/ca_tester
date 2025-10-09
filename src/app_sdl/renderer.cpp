@@ -149,7 +149,11 @@ void Renderer::renderControls() {
 }
 
 void Renderer::renderNeighborhoodSettings() {
-  if (paused_ && ImGui::BeginCombo("Neighborhood", neighborhoodToString(neighborhood_))) {
+  const char* current_neighborhood = neighborhoodToString(neighborhood_);
+  const bool disable = !paused_;
+  if (disable) ImGui::BeginDisabled();
+  const bool open = ImGui::BeginCombo("Neighborhood", current_neighborhood);
+  if (open) {
     for (int n = 0; n < static_cast<int>(Neighborhood::Count); ++n) {
       bool is_selected = (neighborhood_ == static_cast<Neighborhood>(n));
       if (ImGui::Selectable(neighborhoodToString(static_cast<Neighborhood>(n)), is_selected)) {
@@ -159,18 +163,16 @@ void Renderer::renderNeighborhoodSettings() {
       if (is_selected) ImGui::SetItemDefaultFocus();
     }
     ImGui::EndCombo();
-  } else if (!paused_) {
-    ImGui::BeginDisabled();
-    ImGui::BeginCombo("Neighborhood", neighborhoodToString(neighborhood_));
-    ImGui::EndCombo();
-    ImGui::EndDisabled();
   }
-
-  
+  if (disable) ImGui::EndDisabled();
 }
 
 void Renderer::renderBoundarySettings() {
-  if (paused_ && ImGui::BeginCombo("Boundary", boundaryToString(boundary_))) {
+  const char* current_boundary = boundaryToString(boundary_);
+  const bool disable = !paused_;
+  if (disable) ImGui::BeginDisabled();
+  const bool open = ImGui::BeginCombo("Boundary", current_boundary);
+  if (open) {
     for (int b = 0; b < static_cast<int>(Boundary::Count); ++b) {
       bool is_selected = (boundary_ == static_cast<Boundary>(b));
       if (ImGui::Selectable(boundaryToString(static_cast<Boundary>(b)), is_selected)) {
@@ -180,12 +182,8 @@ void Renderer::renderBoundarySettings() {
       if (is_selected) ImGui::SetItemDefaultFocus();
     }
     ImGui::EndCombo();
-  } else if (!paused_) {
-    ImGui::BeginDisabled();
-    ImGui::BeginCombo("Boundary", boundaryToString(boundary_));
-    ImGui::EndCombo();
-    ImGui::EndDisabled();
   }
+  if (disable) ImGui::EndDisabled();
 }
 
 void Renderer::renderGridSettings() {

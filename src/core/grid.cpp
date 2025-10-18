@@ -78,4 +78,34 @@ void Grid::setNeighborhood(Neighborhood neighborhood) {
   neighborhood_ = neighborhood;
 }
 
+std::vector<uint8_t> Grid::getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
+  std::vector<uint8_t> neighbors;
+  switch (neighborhood) {
+    case Neighborhood::Moore: {
+      neighbors.clear();
+      int dxs[8] = {0, -1, -1, -1, 0, 1, 1, 1};
+      int dys[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
+      for (int i = 0; i < 8; ++i) {
+        std::size_t nx = (x + dxs[i] + width) % width;
+        std::size_t ny = (y + dys[i] + height) % height;
+        neighbors.push_back(cells[idx(nx, ny, width)]);
+      }
+      return neighbors;
+    }
+    case Neighborhood::VonNeumann: {
+      neighbors.clear();
+      int dxs[4] = {0, -1, 1, 0};
+      int dys[4] = {-1, 0, 0, 1};
+      for (int i = 0; i < 4; ++i) {
+        std::size_t nx = (x + dxs[i] + width) % width;
+        std::size_t ny = (y + dys[i] + height) % height;
+        neighbors.push_back(cells[idx(nx, ny, width)]);
+      }
+      return neighbors;
+    }
+    default:
+      throw std::invalid_argument("Unsupported neighborhood type in getNeighborsStatic");
+  }
+}
+
 

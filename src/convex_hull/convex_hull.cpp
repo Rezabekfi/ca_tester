@@ -15,7 +15,7 @@ uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours
   return current_state;
 }
 
-void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) const {
+void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
   std::vector<uint8_t> old_grid = grid; // make a copy of the original grid
   for (std::size_t y = 0; y < height; ++y) {
     for (std::size_t x = 0; x < width; ++x) {

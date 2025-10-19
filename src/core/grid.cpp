@@ -30,7 +30,7 @@ uint8_t Grid::getCell(std::size_t x, std::size_t y) const {
   return 0; // or some error value
 }
 
-const std::vector<uint8_t>& Grid::getGridValues() const {
+std::vector<uint8_t>& Grid::getGridValues() {
   return cells_;
 }
 
@@ -108,4 +108,11 @@ std::vector<uint8_t> Grid::getNeighborsStatic(const std::vector<uint8_t>& cells,
   }
 }
 
+Boundary Grid::getBoundary() const {
+  return boundary_;
+}
+
+Neighborhood Grid::getNeighborhood() const {
+  return neighborhood_;
+}
 

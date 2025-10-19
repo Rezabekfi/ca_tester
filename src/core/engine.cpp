@@ -16,6 +16,9 @@ Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Bou
 void Engine::step() {
   {
     std::lock_guard<std::mutex> lock(mtx_);
+    if (calculating_distances_.load(std::memory_order_relaxed) && distance_calculator_) {
+      distance_calculator_(grid_.getGridValues(), grid_.getWidth(), grid_.getHeight(), grid_.getNeighborhood(), grid_.getBoundary());
+    }
     grid_.step(rule_);
     history_.emplace_back(grid_.getGridValues());
   }
@@ -142,5 +145,18 @@ void Engine::setBoundary(Boundary boundary) {
 void Engine::setRule(const Rule& rule) {
   std::lock_guard<std::mutex> lock(mtx_);
   rule_ = rule;
+}
+
+void Engine::setCalculatingDistances(bool calculating) {
+  calculating_distances_.store(calculating, std::memory_order_relaxed);
+}
+
+bool Engine::isCalculatingDistances() const {
+  return calculating_distances_.load(std::memory_order_relaxed);
+}
+
+void Engine::setDistanceCalculator(std::function<void(std::vector<uint8_t>&, std::size_t, std::size_t, Neighborhood, Boundary)> calculator) {
+  std::lock_guard<std::mutex> lock(mtx_);
+  distance_calculator_ = calculator;
 }
 

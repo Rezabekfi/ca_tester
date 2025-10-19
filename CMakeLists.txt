@@ -9,6 +9,7 @@ add_library(ca_core
   src/core/engine.cpp
   src/core/rules_conway.cpp
   src/core/io.cpp
+  src/convex_hull/convex_hull.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

@@ -52,7 +52,7 @@ public:
   void setCell(std::size_t x, std::size_t y, uint8_t state);
   uint8_t getCell(std::size_t x, std::size_t y) const;
 
-  const std::vector<uint8_t>& getGridValues() const;
+  std::vector<uint8_t>& getGridValues();
 
   void setGridValues(const std::vector<uint8_t>& new_grid_values);
 
@@ -63,6 +63,8 @@ public:
 
   std::size_t getWidth() const;
   std::size_t getHeight() const;
+  Boundary getBoundary() const;
+  Neighborhood getNeighborhood() const;
 
   static std::vector<uint8_t> getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary);
 

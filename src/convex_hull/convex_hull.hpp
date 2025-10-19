@@ -14,7 +14,7 @@ public:
   uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours) const override;
   std::string getName() const override;
   
-  void calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) const;
+  static void calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary);
 private:
   bool even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool odd_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;

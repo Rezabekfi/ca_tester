@@ -1,8 +1,17 @@
 #import "convex_hull.hpp"
 
 uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
-  bool mark = (current_state == 1);
-
+  if ((current_state & 0x01) == 1) {
+    return current_state;
+  }
+  bool mark = false;
+  mark |= even_center(current_state, neighbours);
+  mark |= odd_center(current_state, neighbours);
+  mark |= back_mark(current_state, neighbours);
+  mark |= exists_oposite_marked_neighbor(current_state, neighbours);
+  if (mark) {
+    return (current_state + 1);
+  }
   return current_state;
 }
 
@@ -30,6 +39,47 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
 
 }
 
+bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+  uint8_t dist_x = current_state / 10;
+  uint8_t wanted_dist = 0;
+  (dist_x == 0) ? wanted_dist = 2 : wanted_dist = dist_x - 1;
+  std::size_t half_size = neighbours.size() / 2;
+  for (std::size_t i = 0; i < half_size; ++i) {
+    if (neighbours[i] / 10 == wanted_dist && neighbours[i + half_size] / 10 == wanted_dist) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ConvexHull::odd_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+  //TODO: implement low prio
+  return false;
+}
+
+bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+  uint8_t wanted_value = ((current_state + 10) % 30) + 1; // we want distance + 1 and marked
+  for (auto neighbour : neighbours) {
+    if (neighbour == wanted_value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool ConvexHull::exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+  std::size_t half_size = neighbours.size() / 2;
+  for (std::size_t i = 0; i < half_size; ++i) {
+    if ((neighbours[i] & 0x01) == 1 && (neighbours[i + half_size] & 0x01) == 1) {
+      return true;
+    }
+  }
+  return false;
+}
+
+
 std::string ConvexHull::getName() const {
   return CONVEX_HULL_RULE_NAME;
 }
+
+

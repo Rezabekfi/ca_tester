@@ -15,4 +15,9 @@ public:
   std::string getName() const override;
   
   void calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) const;
+private:
+  bool even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
+  bool odd_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
+  bool back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
+  bool exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
 };

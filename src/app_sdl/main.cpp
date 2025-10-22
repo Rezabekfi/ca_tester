@@ -24,9 +24,11 @@ int main(int argc, char* argv[])
   }
   Rule& rule = chooseRule(use_conway);
   Engine e(50, 30, rule);
-  e.setDistanceCalculator(ConvexHull::calculateDistances);
-  e.setCalculatingDistances(true);
-  Renderer r(e, 20);
+  if (!use_conway) {
+    e.setDistanceCalculator(ConvexHull::calculateDistances);
+    e.setCalculatingDistances(true);
+  }
+   Renderer r(e, 20);
   
   while (r.render()) {
     // loop until window closed

@@ -3,6 +3,9 @@
 #include <cstdint>
 #include <cstddef>
 #include <vector>
+#include <array>
+#include <utility>
+#include <span>
 #include "rule.hpp"
 
 enum class Boundary : uint8_t {
@@ -24,6 +27,22 @@ inline const char* boundaryToString(Boundary b) {
 enum class Neighborhood : uint8_t {
   Moore, VonNeumann, Count
 };
+
+constexpr std::array<std::pair<int,int>, 8> deltas_moore = {{
+    {-1,-1}, {0,-1}, {1,-1},
+    {-1, 0},          {1, 0},
+    {-1, 1}, {0, 1}, {1, 1}
+}};
+
+constexpr std::array<std::pair<int,int>, 4> deltas_vonneumann = {{
+    {0,-1},
+    {-1,0}, {1,0},
+    {0, 1}
+}};
+
+inline std::span<const std::pair<int,int>> pick_deltas(Neighborhood n) {
+    return (n == Neighborhood::Moore) ? std::span<const std::pair<int,int>>(deltas_moore) : std::span<const std::pair<int,int>>(deltas_vonneumann);
+}
 
 // neighborhood to string
 inline const char* neighborhoodToString(Neighborhood n) {
@@ -78,5 +97,4 @@ private:
   std::vector<uint8_t> cells_;
   std::vector<uint8_t> new_cells_;
 
-  std::vector<uint8_t> getNeighbors(std::size_t x, std::size_t y) const;
 };

@@ -1,4 +1,5 @@
-#import "convex_hull.hpp"
+#include "convex_hull.hpp"
+#include <iostream>
 
 uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
   if ((current_state & 0x01) == 1) {
@@ -14,6 +15,7 @@ uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours
   }
   return current_state;
 }
+
 
 void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
   std::vector<uint8_t> old_grid = grid; // make a copy of the original grid
@@ -31,12 +33,11 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
           break;
         } 
       }
-      if (!all_same) {
+      if (all_same) { 
         grid[y * width + x] = (grid[y * width + x] + 10) % 30;
       }
     }
   }
-
 }
 
 bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
@@ -46,7 +47,7 @@ bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& 
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
     if (neighbours[i] / 10 == wanted_dist && neighbours[i + half_size] / 10 == wanted_dist) {
-      return true;
+     return true;
     }
   }
   return false;

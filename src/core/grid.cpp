@@ -9,7 +9,7 @@ void Grid::step(const Rule& rule) {
   new_cells_ = cells_;
   for (std::size_t y = 0; y < height_; ++y) {
     for (std::size_t x = 0; x < width_; ++x) {
-      std::vector<uint8_t> neighbors = getNeighbors(x, y);
+      std::vector<uint8_t> neighbors = getNeighborsStatic(cells_, x, y, width_, height_, neighborhood_, boundary_); 
       uint8_t current_state = cells_[idx(x, y, width_)];
       new_cells_[idx(x, y, width_)] = rule.apply(current_state, neighbors);
     }
@@ -44,22 +44,6 @@ std::size_t Grid::getWidth() const {
   return width_;
 }
 
-std::vector<uint8_t> Grid::getNeighbors(std::size_t x, std::size_t y) const {
-  std::vector<uint8_t> neighbors;
-  // TODO: add switch for different neighborhood types (for now only one will be implemented)
-  
-  // we always want to take the points anticlockwise from the top 
-  int dxs[8] = {0, -1, -1, -1, 0, 1, 1, 1};
-  int dys[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
-  for (int i = 0; i < 8; ++i) {
-    // wrap for all for now
-    std::size_t nx = (x + dxs[i] + width_) % width_;
-    std::size_t ny = (y + dys[i] + height_) % height_;
-    neighbors.push_back(cells_[idx(nx, ny, width_)]);
-  }
-  return neighbors;
-}
-
 std::size_t Grid::getHeight() const {
   return height_;
 }
@@ -80,32 +64,40 @@ void Grid::setNeighborhood(Neighborhood neighborhood) {
 
 std::vector<uint8_t> Grid::getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
   std::vector<uint8_t> neighbors;
-  switch (neighborhood) {
-    case Neighborhood::Moore: {
-      neighbors.clear();
-      int dxs[8] = {0, -1, -1, -1, 0, 1, 1, 1};
-      int dys[8] = {-1, -1, 0, 1, 1, 1, 0, -1};
-      for (int i = 0; i < 8; ++i) {
-        std::size_t nx = (x + dxs[i] + width) % width;
-        std::size_t ny = (y + dys[i] + height) % height;
-        neighbors.push_back(cells[idx(nx, ny, width)]);
-      }
-      return neighbors;
+  auto deltas = pick_deltas(neighborhood);
+  for (const auto& delta : deltas) {
+    int nx = static_cast<int>(x) + delta.first;
+    int ny = static_cast<int>(y) + delta.second;
+    switch (boundary) {
+      case Boundary::Wrap:
+        nx = (nx + static_cast<int>(width)) % static_cast<int>(width);
+        ny = (ny + static_cast<int>(height)) % static_cast<int>(height);
+        break;
+      case Boundary::Zero:
+        if (nx < 0 || nx >= static_cast<int>(width) || ny < 0 || ny >= static_cast<int>(height)) {
+          neighbors.push_back(0);
+          continue;
+        }
+        break;
+      case Boundary::Reflect:
+        if (nx < 0) nx = 0;
+        if (nx >= static_cast<int>(width)) nx = static_cast<int>(width) - 1;
+        if (ny < 0) ny = 0;
+        if (ny >= static_cast<int>(height)) ny = static_cast<int>(height) - 1;
+        break;
+      case Boundary::One:
+        if (nx < 0 || nx >= static_cast<int>(width) || ny < 0 || ny >= static_cast<int>(height)) {
+          neighbors.push_back(1);
+          continue;
+        }
+        break;
+      default:
+        // TODO: handle error for now we just dont add neighbours which should technically work but shouldnt happen
+        continue;
     }
-    case Neighborhood::VonNeumann: {
-      neighbors.clear();
-      int dxs[4] = {0, -1, 1, 0};
-      int dys[4] = {-1, 0, 0, 1};
-      for (int i = 0; i < 4; ++i) {
-        std::size_t nx = (x + dxs[i] + width) % width;
-        std::size_t ny = (y + dys[i] + height) % height;
-        neighbors.push_back(cells[idx(nx, ny, width)]);
-      }
-      return neighbors;
-    }
-    default:
-      throw std::invalid_argument("Unsupported neighborhood type in getNeighborsStatic");
+    neighbors.push_back(cells[idx(static_cast<std::size_t>(nx), static_cast<std::size_t>(ny), width)]);
   }
+  return neighbors;
 }
 
 Boundary Grid::getBoundary() const {

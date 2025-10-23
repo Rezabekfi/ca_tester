@@ -2,7 +2,7 @@
 #include <iostream>
 
 uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
-  if ((current_state & 0x01) == 1) {
+  if (is_seed(current_state) || is_marked(current_state)) {
     return current_state;
   }
   bool mark = false;
@@ -11,7 +11,7 @@ uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours
   mark |= back_mark(current_state, neighbours);
   mark |= exists_oposite_marked_neighbor(current_state, neighbours);
   if (mark) {
-    return (current_state + 1);
+    return mark_cell(current_state);
   }
   return current_state;
 }
@@ -21,32 +21,32 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
   std::vector<uint8_t> old_grid = grid; // make a copy of the original grid
   for (std::size_t y = 0; y < height; ++y) {
     for (std::size_t x = 0; x < width; ++x) {
-      if (grid[y * width + x] == 1) {
-        continue; // skip alive cells
+      if (is_seed(old_grid[y * width + x])) {
+        continue; // skip seeds 
       }
       std::vector<uint8_t> neighbors = Grid::getNeighborsStatic(old_grid, x, y, width, height, neighborhood, boundary);
       bool all_same = true;
-      uint8_t value = old_grid[y * width + x]; 
-      for (auto neighbor : neighbors) {
-        if (neighbor != value) {
+      uint8_t distance = get_distance(grid[y * width + x]); 
+      for (uint8_t neighbor : neighbors) {
+        if (get_distance(neighbor) != distance) {
           all_same = false;
           break;
         } 
       }
       if (all_same) { 
-        grid[y * width + x] = (grid[y * width + x] + 10) % 30;
+        grid[y * width + x] = advance_distance(grid[y * width + x]);
       }
     }
   }
 }
 
 bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
-  uint8_t dist_x = current_state / 10;
+  uint8_t dist_x = get_distance(current_state);
   uint8_t wanted_dist = 0;
-  (dist_x == 0) ? wanted_dist = 2 : wanted_dist = dist_x - 1;
+  (dist_x == 0) ? wanted_dist = get_distance(set_distance(wanted_dist, 2)) : wanted_dist =  get_distance(set_distance(wanted_dist, dist_x - 1));
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
-    if (neighbours[i] / 10 == wanted_dist && neighbours[i + half_size] / 10 == wanted_dist) {
+    if (get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist) {
      return true;
     }
   }
@@ -59,7 +59,7 @@ bool ConvexHull::odd_center(uint8_t current_state, const std::vector<uint8_t>& n
 }
 
 bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
-  uint8_t wanted_value = ((current_state + 10) % 30) + 1; // we want distance + 1 and marked
+  uint8_t wanted_value = create_cell(false, true, advance_distance(current_state)); // not seed, marked, distance advanced by one
   for (auto neighbour : neighbours) {
     if (neighbour == wanted_value) {
       return true;
@@ -71,7 +71,7 @@ bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& ne
 bool ConvexHull::exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
-    if ((neighbours[i] & 0x01) == 1 && (neighbours[i + half_size] & 0x01) == 1) {
+    if ((is_marked(neighbours[i]) || is_seed(neighbours[i])) && (is_marked(neighbours[i + half_size]) || is_seed(neighbours[i + half_size]))) {
       return true;
     }
   }

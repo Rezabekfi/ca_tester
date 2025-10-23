@@ -232,13 +232,12 @@ void Renderer::renderGrid() {
     bool hovered = ImGui::IsItemHovered();
     bool active  = ImGui::IsItemActive();
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    // Draw background + border of the grid area
     dl->AddRectFilled(p0, ImVec2(p0.x + size.x, p0.y + size.y), IM_COL32(25, 25, 25, 255));
     dl->AddRect(p0, ImVec2(p0.x + size.x, p0.y + size.y), IM_COL32(130, 130, 130, 255), 0.0f, 0, line_thickness);
     // Draw filled cells
     for (std::size_t r = 0; r < rows; ++r) {
       for (std::size_t c = 0; c < cols; ++c) {
-        if (cells[r * cols + c] & 0x01) {
+        if (cells[r * cols + c] & 0x03) {
           ImVec2 a(p0.x + c * cellSize + 1, p0.y + r * cellSize + 1);
           ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
           dl->AddRectFilled(a, b, fillColor);

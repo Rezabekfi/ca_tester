@@ -4,9 +4,6 @@
 #include "core/engine.hpp"
 #include <SDL.h>
 #include <imgui.h>
-#include <memory>
-
-
 
 class Renderer {
 public:

@@ -54,7 +54,6 @@ bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& 
 }
 
 bool ConvexHull::odd_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
-  //TODO: implement low prio
   return false;
 }
 

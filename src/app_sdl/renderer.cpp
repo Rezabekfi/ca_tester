@@ -5,7 +5,6 @@
 #include "backends/imgui_impl_sdlrenderer2.h"
 #include <SDL.h>
 #include <stdexcept>
-#include <iostream>
 
 
 Renderer::Renderer(Engine& engine, std::size_t cell_size)
@@ -237,7 +236,7 @@ void Renderer::renderGrid() {
     // Draw filled cells
     for (std::size_t r = 0; r < rows; ++r) {
       for (std::size_t c = 0; c < cols; ++c) {
-        if (cells[r * cols + c] & 0x03) {
+        if (cells[r * cols + c] & 0x03) { // last two bits indicate filled state (2 = marked, 1 = seed)
           ImVec2 a(p0.x + c * cellSize + 1, p0.y + r * cellSize + 1);
           ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
           dl->AddRectFilled(a, b, fillColor);

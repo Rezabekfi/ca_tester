@@ -1,17 +1,24 @@
 #include "grid.hpp"
+#include "rule_context.hpp"
 
 Grid::Grid(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood)
   : width_(width), height_(height), boundary_(boundary), neighborhood_(neighborhood) {
   cells_.resize(width * height, default_state);
 }
 
+
 void Grid::step(const Rule& rule) {
   new_cells_ = cells_;
+  RuleContext ctx{*this, 0, 0, neighborhood_, boundary_};
+
   for (std::size_t y = 0; y < height_; ++y) {
     for (std::size_t x = 0; x < width_; ++x) {
-      std::vector<uint8_t> neighbors = getNeighborsStatic(cells_, x, y, width_, height_, neighborhood_, boundary_); 
+      ctx.x = x;
+      ctx.y = y;
+      std::vector<uint8_t> neighbours =
+          getNeighborsStatic(cells_, x, y, width_, height_, neighborhood_, boundary_);
       uint8_t current_state = cells_[idx(x, y, width_)];
-      new_cells_[idx(x, y, width_)] = rule.apply(current_state, neighbors);
+      new_cells_[idx(x, y, width_)] = rule.apply(current_state, ctx, neighbours);
     }
   }
   cells_ = new_cells_;
@@ -108,3 +115,6 @@ Neighborhood Grid::getNeighborhood() const {
   return neighborhood_;
 }
 
+const std::vector<uint8_t>& Grid::getGridValues() const {
+  return cells_;
+}

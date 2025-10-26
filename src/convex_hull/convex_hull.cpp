@@ -1,21 +1,22 @@
 #include "convex_hull.hpp"
-#include <iostream>
 
-uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
-  if (is_seed(current_state) || is_marked(current_state)) {
-    return current_state;
-  }
+
+uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+  if (is_seed(current_state) || is_marked(current_state)) return current_state;
+
   bool mark = false;
-  mark |= even_center(current_state, neighbours);
-  mark |= odd_center(current_state, neighbours);
+  mark |= vertex_center(current_state, neighbours);
+  mark |= edge_center(current_state, ctx, neighbours);
   mark |= back_mark(current_state, neighbours);
   mark |= exists_oposite_marked_neighbor(current_state, neighbours);
-  if (mark) {
-    return mark_cell(current_state);
-  }
-  return current_state;
+
+  return mark ? mark_cell(current_state) : current_state;
 }
 
+uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
+  // This method is not used in this rule, but must be implemented.
+  return current_state;
+}
 
 void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
   std::vector<uint8_t> old_grid = grid; // make a copy of the original grid
@@ -40,9 +41,10 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
   }
 }
 
-bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+bool ConvexHull::vertex_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
   uint8_t dist_x = get_distance(current_state);
   uint8_t wanted_dist = 0;
+  // TODO: fix calculating dits+1 this is incorrect most likely (in some cases not)
   (dist_x == 0) ? wanted_dist = get_distance(set_distance(wanted_dist, 2)) : wanted_dist =  get_distance(set_distance(wanted_dist, dist_x - 1));
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
@@ -53,8 +55,9 @@ bool ConvexHull::even_center(uint8_t current_state, const std::vector<uint8_t>& 
   return false;
 }
 
-bool ConvexHull::odd_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
-  return false;
+
+bool ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+    return false;
 }
 
 bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {

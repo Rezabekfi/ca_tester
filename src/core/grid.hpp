@@ -29,15 +29,11 @@ enum class Neighborhood : uint8_t {
 };
 
 constexpr std::array<std::pair<int,int>, 8> deltas_moore = {{
-    {-1,-1}, {0,-1}, {1,-1},
-    {-1, 0},          {1, 0},
-    {-1, 1}, {0, 1}, {1, 1}
+  {0,-1}, {-1,-1},{-1,0},{-1,1},{0,1},{1,1},{1,0},{1,-1}
 }};
 
 constexpr std::array<std::pair<int,int>, 4> deltas_vonneumann = {{
-    {0,-1},
-    {-1,0}, {1,0},
-    {0, 1}
+  {0,-1}, {-1,0}, {0,1}, {1,0}
 }};
 
 inline std::span<const std::pair<int,int>> pick_deltas(Neighborhood n) {

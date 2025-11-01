@@ -36,6 +36,11 @@ inline constexpr uint8_t advance_distance(uint8_t s) {
   return set_distance(s, static_cast<uint8_t>(get_distance(s) + 1));
 }
 
+inline constexpr uint8_t retreat_distance(uint8_t s) {
+  if (is_seed(s)) return set_distance(s, 0);
+  return set_distance(s, static_cast<uint8_t>((get_distance(s) + 2) % 3));
+}
+
 inline constexpr uint8_t create_cell(bool seed, bool marked, uint8_t distance) {
   uint8_t s = 0;
   if (seed)   s |= CellBits::SEED_MASK;
@@ -61,4 +66,5 @@ private:
   bool vertex_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
+  std::pair<std::vector<uint8_t>, std::vector<uint8_t>> getDistinctNeighbourhoods(std::size_t nx, std::size_t ny, const RuleContext& ctx) const;
 };

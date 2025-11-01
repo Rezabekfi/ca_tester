@@ -1,14 +1,16 @@
 #include "convex_hull.hpp"
-
+#include <cmath>
+#include <iostream>
+#include <algorithm>
 
 uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   if (is_seed(current_state) || is_marked(current_state)) return current_state;
 
   bool mark = false;
-  mark |= vertex_center(current_state, neighbours);
+/*   mark |= vertex_center(current_state, neighbours) */;
   mark |= edge_center(current_state, ctx, neighbours);
-  mark |= back_mark(current_state, neighbours);
-  mark |= exists_oposite_marked_neighbor(current_state, neighbours);
+  // mark |= back_mark(current_state, neighbours);
+  // mark |= exists_oposite_marked_neighbor(current_state, neighbours);
 
   return mark ? mark_cell(current_state) : current_state;
 }
@@ -55,13 +57,40 @@ bool ConvexHull::vertex_center(uint8_t current_state, const std::vector<uint8_t>
   return false;
 }
 
-
 bool ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
-    return false;
+  uint8_t dist_x = get_distance(current_state);
+  auto deltas = pick_deltas(ctx.neighborhood);
+  const auto& gridVals = ctx.getGrid().getGridValues();
+  
+  for (std::size_t i = 0; i < deltas.size(); ++i) {
+    int nx = static_cast<int>(ctx.x) + deltas[i].first;
+    int ny = static_cast<int>(ctx.y) + deltas[i].second;
+    if (nx < 0 || ny < 0 || nx >= static_cast<int>(ctx.getGrid().getWidth()) || ny >= static_cast<int>(ctx.getGrid().getHeight())) {
+      continue; // out of bounds
+    }
+    uint8_t neighbor_state = gridVals[ny * ctx.getGrid().getWidth() + nx];
+    uint8_t dist_y = get_distance(neighbor_state);
+    if (dist_y != dist_x) {
+      continue;
+    }
+    uint8_t wanted_dist = get_distance(retreat_distance(current_state)); 
+    auto y_neighbors = ctx.getNeighbors(static_cast<std::size_t>(nx), static_cast<std::size_t>(ny));
+
+    // neihbours are anticlockwise starting from the top middle for moore and from the top for vonneumann 
+    for (std::size_t j = 0; j < neighbours.size(); ++j) {
+      if (get_distance(y_neighbors[j]) == wanted_dist) {
+        std::size_t opposite_index = (j + (neighbours.size() / 2)) % neighbours.size();
+        if (get_distance(neighbours[opposite_index]) == wanted_dist) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }
 
 bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
-  uint8_t wanted_value = create_cell(false, true, advance_distance(current_state)); // not seed, marked, distance advanced by one
+  uint8_t wanted_value = create_cell(false, true, get_distance(advance_distance(current_state))); // not seed, marked, distance advanced by one
   for (auto neighbour : neighbours) {
     if (neighbour == wanted_value) {
       return true;
@@ -78,6 +107,11 @@ bool ConvexHull::exists_oposite_marked_neighbor(uint8_t current_state, const std
     }
   }
   return false;
+}
+
+// returns pair of distinct neighbourhoods around ctx.x,ctx.y and nx,ny first std::vector is for x (meaning the point ctx.x,ctx.y) second for y (meaning the point nx,ny)
+// if both neighborhoods contain a positon that position wont appear in either of the returned vectors
+std::pair<std::vector<uint8_t>, std::vector<uint8_t>> ConvexHull::getDistinctNeighbourhoods(std::size_t nx, std::size_t ny, const RuleContext& ctx) const {
 }
 
 

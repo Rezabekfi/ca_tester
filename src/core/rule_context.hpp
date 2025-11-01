@@ -18,6 +18,9 @@ struct RuleContext {
   std::vector<uint8_t> getNeighbors(std::size_t px, std::size_t py) const;
   std::vector<uint8_t> getEdgeNeighborhood(std::size_t x1, std::size_t y1,
                                            std::size_t x2, std::size_t y2) const;
+  std::vector<std::pair<int, int>> getEdgeNeighborhoodWithCoordinates(std::size_t x1, std::size_t y1,
+                                                           std::size_t x2, std::size_t y2) const;
+  std::vector<std::pair<int, int>> getNeighborhoodWithCoordinates(std::size_t x, std::size_t y) const;
   const Grid& getGrid() const { return grid; }
 };
 

@@ -66,5 +66,6 @@ private:
   bool vertex_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
+  bool distinct_sets(const RuleContext& ctx, std::size_t nx, std::size_t ny, std::size_t index_x, std::size_t index_y, uint8_t goal_distance) const;
   std::pair<std::vector<uint8_t>, std::vector<uint8_t>> getDistinctNeighbourhoods(std::size_t nx, std::size_t ny, const RuleContext& ctx) const;
 };

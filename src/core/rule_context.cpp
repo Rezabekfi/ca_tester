@@ -15,3 +15,31 @@ std::vector<uint8_t> RuleContext::getEdgeNeighborhood(std::size_t x1, std::size_
     return n1;
 }
 
+std::vector<std::pair<int, int>> RuleContext::getEdgeNeighborhoodWithCoordinates(std::size_t x1, std::size_t y1,
+                                                                                  std::size_t x2, std::size_t y2) const {
+    std::vector<std::pair<int, int>> coords;
+    auto deltas = pick_deltas(neighborhood);
+    for (const auto& delta : deltas) {
+        int nx1 = static_cast<int>(x1) + delta.first;
+        int ny1 = static_cast<int>(y1) + delta.second;
+        coords.emplace_back(nx1, ny1);
+    }
+    for (const auto& delta : deltas) {
+        int nx2 = static_cast<int>(x2) + delta.first;
+        int ny2 = static_cast<int>(y2) + delta.second;
+        coords.emplace_back(nx2, ny2);
+    }
+    return coords;
+}
+
+std::vector<std::pair<int, int>> RuleContext::getNeighborhoodWithCoordinates(std::size_t x, std::size_t y) const {
+    std::vector<std::pair<int, int>> coords;
+    auto deltas = pick_deltas(neighborhood);
+    for (const auto& delta : deltas) {
+        int nx = static_cast<int>(x) + delta.first;
+        int ny = static_cast<int>(y) + delta.second;
+        coords.emplace_back(nx, ny);
+    }
+    return coords;
+}
+

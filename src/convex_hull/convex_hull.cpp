@@ -48,7 +48,7 @@ uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const s
   if (is_seed(current_state) || is_marked(current_state)) return current_state;
 
   bool mark = false;
-  mark |= vertex_center(current_state, neighbours);
+  mark |= vertex_center(current_state, ctx, neighbours);
   mark |= edge_center(current_state, ctx, neighbours);
   mark |= back_mark(current_state, neighbours);
   mark |= exists_oposite_marked_neighbor(current_state, neighbours);
@@ -83,14 +83,20 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
   }
 }
 
-bool ConvexHull::vertex_center(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
+bool ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   uint8_t dist_x = get_distance(current_state);
-  uint8_t wanted_dist = 0;
-  // TODO: fix calculating dits+1 this is incorrect most likely (in some cases not)
-  (dist_x == 0) ? wanted_dist = get_distance(set_distance(wanted_dist, 2)) : wanted_dist =  get_distance(set_distance(wanted_dist, dist_x - 1));
+  bool all_same = true;
+  for (auto neighbour :neighbours) {
+    if (get_distance(neighbour) != dist_x) {
+      all_same = false;
+      break;
+    }
+  }
+  if (all_same) dist_x = get_distance(advance_distance(current_state));
+  uint8_t wanted_dist = get_distance(retreat_distance(current_state)); 
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
-    if (get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist) {
+    if ((get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist) && distinct_sets(ctx, ctx.x, ctx.y, i, i + half_size, wanted_dist)) {
      return true;
     }
   }

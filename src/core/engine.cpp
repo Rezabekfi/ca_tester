@@ -3,13 +3,13 @@
 #include <thread>
 
 // TODO: fix magical constants
-Engine::Engine(std::size_t width, std::size_t height, Rule& rule)
-  : grid_(width, height), rule_(rule), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
+Engine::Engine(std::size_t width, std::size_t height, std::unique_ptr<Rule> rule)
+  : grid_(width, height), rule_(std::move(rule)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
   history_.emplace_back(grid_.getGridValues());
 }
 
-Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, Rule& rule)
-  : grid_(width, height, default_state, boundary, neighborhood), rule_(rule), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
+Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::unique_ptr<Rule> rule)
+  : grid_(width, height, default_state, boundary, neighborhood), rule_(std::move(rule)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
   history_.emplace_back(grid_.getGridValues()); 
 }
 
@@ -19,7 +19,7 @@ void Engine::step() {
     if (calculating_distances_.load(std::memory_order_relaxed) && distance_calculator_) {
       distance_calculator_(grid_.getGridValues(), grid_.getWidth(), grid_.getHeight(), grid_.getNeighborhood(), grid_.getBoundary());
     }
-    grid_.step(rule_);
+    grid_.step(*rule_);
     history_.emplace_back(grid_.getGridValues());
   }
   iteration_.fetch_add(1, std::memory_order_relaxed);
@@ -142,9 +142,9 @@ void Engine::setBoundary(Boundary boundary) {
   grid_.setBoundary(boundary);
 }
 
-void Engine::setRule(const Rule& rule) {
+void Engine::setRule(std::unique_ptr<Rule> rule) {
   std::lock_guard<std::mutex> lock(mtx_);
-  rule_ = rule;
+  rule_ = std::move(rule);
 }
 
 void Engine::setCalculatingDistances(bool calculating) {
@@ -155,14 +155,8 @@ bool Engine::isCalculatingDistances() const {
   return calculating_distances_.load(std::memory_order_relaxed);
 }
 
-Rule& Engine::getRule() const {
-  return rule_;
-}
-
 void Engine::setDistanceCalculator(std::function<void(std::vector<uint8_t>&, std::size_t, std::size_t, Neighborhood, Boundary)> calculator) {
   std::lock_guard<std::mutex> lock(mtx_);
   distance_calculator_ = calculator;
 }
-
-
 

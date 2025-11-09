@@ -6,12 +6,13 @@
 #include <atomic>
 #include <thread>
 #include <functional>
+#include <memory>
 
 
 class Engine {
 public:
-  Engine(std::size_t width, std::size_t height, Rule& rule);
-  Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, Rule& rule);
+  Engine(std::size_t width, std::size_t height, std::unique_ptr<Rule> rule);
+  Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::unique_ptr<Rule> rule);
 
   void step();
   void start();
@@ -30,7 +31,7 @@ public:
 
   void setNeighborhood(Neighborhood neighborhood);
   void setBoundary(Boundary boundary);
-  void setRule(const Rule& rule);
+  void setRule(std::unique_ptr<Rule> rule);
   void setCalculatingDistances(bool calculating);
   bool isCalculatingDistances() const;
 
@@ -49,7 +50,7 @@ private:
   std::jthread worker_;
   std::mutex mtx_;
   Grid grid_;
-  Rule& rule_;
+  std::unique_ptr<Rule> rule_;
   std::atomic<double> speed_;
   std::atomic<double> elapsed_time_;
   std::atomic<std::size_t> iteration_;

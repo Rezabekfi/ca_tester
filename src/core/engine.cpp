@@ -155,8 +155,14 @@ bool Engine::isCalculatingDistances() const {
   return calculating_distances_.load(std::memory_order_relaxed);
 }
 
+Rule& Engine::getRule() const {
+  return rule_;
+}
+
 void Engine::setDistanceCalculator(std::function<void(std::vector<uint8_t>&, std::size_t, std::size_t, Neighborhood, Boundary)> calculator) {
   std::lock_guard<std::mutex> lock(mtx_);
   distance_calculator_ = calculator;
 }
+
+
 

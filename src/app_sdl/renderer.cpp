@@ -140,6 +140,7 @@ void Renderer::renderControls() {
 
     renderNeighborhoodSettings();
     renderBoundarySettings();
+    renderRuleSettings();
     ImGui::Separator();
     renderGridSettings();
   }
@@ -164,6 +165,9 @@ void Renderer::renderNeighborhoodSettings() {
     ImGui::EndCombo();
   }
   if (disable) ImGui::EndDisabled();
+}
+
+void Renderer::renderRuleSettings() {
 }
 
 void Renderer::renderBoundarySettings() {
@@ -339,9 +343,5 @@ bool Renderer::sdl_init() {
 
 void Renderer::renderAbout() {
   // TODO: implement this
-}
-
-void Renderer::renderRuleSettings() {
-  
 }
 

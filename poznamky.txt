@@ -1,0 +1,16 @@
+dilatace eroze implementovat
+rotace 
+rastrové prostředí řešit hlavně a použít na CA
+cíl opravení dilatace a eroze (maybe roatce a s danou osou nebo klidně nedanou osou) 
+kouknout na gregora a jeho pravidla
+pokus vyřešit úlohu na jednoduchém objektu s danou osou 
+konvexni + manhatan vzdálenost (kombinace pravidel z konvexni obalky)
+vyzkoušet narovnávání obdelníku přes metriku
+
+
+psát pouze 
+definice problému a teorie (kterou používám nebo ostatní používají)
+
+todo: 
+otočení toho obdélníku
+dilatace a eroze

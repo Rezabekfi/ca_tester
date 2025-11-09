@@ -22,6 +22,7 @@ public:
   Grid& getGrid();
   void setSpeed(double speed); // speed in steps per second
   double getSpeed() const;
+  Rule& getRule() const;
   std::size_t getIteration() const;
   const std::vector<std::vector<uint8_t>>& getHistory();
   const std::vector<uint8_t>& getStateAtIteration(std::size_t iteration);

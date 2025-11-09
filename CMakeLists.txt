@@ -11,6 +11,8 @@ add_library(ca_core
   src/core/io.cpp
   src/convex_hull/convex_hull.cpp
   src/core/rule_context.cpp
+  src/aditional_rules/erosion.cpp
+  src/aditional_rules/dilation.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

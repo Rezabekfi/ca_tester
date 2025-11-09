@@ -31,8 +31,6 @@ private:
   SDL_Window* window_ = nullptr;
   SDL_Renderer* sdl_renderer_ = nullptr;
 
-
-
   void renderControls();
   void renderGrid();
   void renderSplitter();

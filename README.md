@@ -11,6 +11,4 @@ If you want to use this app in your own project, all you need to import is the `
 
 To add new rules to the app you need to create a new class that implements the `Rule` interface and also add it to the `RuleFactory` class, which you can do by adding this line to your rule.
 
-```cpp```
-  static inline AutoRegisterRule<YourRule> auto_register_convex_hull{"Your rule", "Decription of your rule"};
-```
+```cpp static inline AutoRegisterRule&lt;YourRule&gt; auto_register_convex_hull{"Your rule", "Description of your rule"}; ```

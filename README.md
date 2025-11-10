@@ -11,4 +11,6 @@ If you want to use this app in your own project, all you need to import is the `
 
 To add new rules to the app you need to create a new class that implements the `Rule` interface and also add it to the `RuleFactory` class, which you can do by adding this line to your rule.
 
-```cpp inline static AutoRegisterRule<YourClass> auto_register{"YourClassName", "Description describing your class"}; ```
+```cpp
+inline static AutoRegisterRule<YourClass> auto_register{"YourClassName", "Description describing your class"};
+```

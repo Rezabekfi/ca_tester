@@ -6,10 +6,9 @@
 #include "aditional_rules/erosion.hpp"
 
 int main(int argc, char* argv[]) {
-  Engine e(50, 30, std::make_unique<ConwayRule>());
-
+  ConwayRule conway_rule;
+  Engine e(50, 30, conway_rule.getName());
   Renderer r(e, 20);
-  
   while (r.render()) {
     // loop until window closed
   }

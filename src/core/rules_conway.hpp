@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rule.hpp"
+#include "rule_registry.hpp"
 #include <cstdint>
 #include <vector>
 
@@ -14,6 +15,7 @@ public:
 
   uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours) const override;
   std::string getName() const override;
+  inline static AutoRegisterRule<ConwayRule> auto_register{CONWAY_RULE_NAME, "Classic Conway's Game of Life rule."};
 };
 
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "core/rule.hpp"
 #include "core/grid.hpp"
+#include "core/rule_registry.hpp"
 
 // Bit layout:
 // b0: SEED, b1: MARK, b2..b3: DIST (0..2; value 3 is unused)
@@ -61,6 +62,9 @@ public:
   std::string getName() const override;
   
   static void calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary);
+
+  static inline AutoRegisterRule<ConvexHull> auto_register_convex_hull{CONVEX_HULL_RULE_NAME, "Convex Hull rule that computes the convex hull of a set of seed cells."};
+
 private:
   bool edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const;
   bool vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const;

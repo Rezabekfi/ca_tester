@@ -3,13 +3,13 @@
 #include <thread>
 
 // TODO: fix magical constants
-Engine::Engine(std::size_t width, std::size_t height, std::unique_ptr<Rule> rule)
-  : grid_(width, height), rule_(std::move(rule)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
+Engine::Engine(std::size_t width, std::size_t height, std::string rule_key) 
+  : grid_(width, height), rule_(RuleRegistry::getInstance().make(rule_key)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
   history_.emplace_back(grid_.getGridValues());
 }
 
-Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::unique_ptr<Rule> rule)
-  : grid_(width, height, default_state, boundary, neighborhood), rule_(std::move(rule)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
+Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::string rule_key)
+  : grid_(width, height, default_state, boundary, neighborhood), rule_(RuleRegistry::getInstance().make(rule_key)), speed_(1.0), elapsed_time_(0.0), iteration_(0) {
   history_.emplace_back(grid_.getGridValues()); 
 }
 
@@ -149,6 +149,10 @@ void Engine::setRule(std::unique_ptr<Rule> rule) {
 
 void Engine::setCalculatingDistances(bool calculating) {
   calculating_distances_.store(calculating, std::memory_order_relaxed);
+}
+
+Rule& Engine::getRule() const {
+  return *rule_;
 }
 
 bool Engine::isCalculatingDistances() const {

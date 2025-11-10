@@ -5,6 +5,7 @@
 #include "backends/imgui_impl_sdlrenderer2.h"
 #include <SDL.h>
 #include <stdexcept>
+#include "core/rule_registry.hpp"
 
 
 Renderer::Renderer(Engine& engine, std::size_t cell_size)
@@ -168,6 +169,22 @@ void Renderer::renderNeighborhoodSettings() {
 }
 
 void Renderer::renderRuleSettings() {
+  auto list = RuleRegistry::getInstance().list();
+  const char* current_rule = engine_.getRule().getName().c_str();
+  const bool disable = !paused_;
+  if (disable) ImGui::BeginDisabled();
+  const bool open = ImGui::BeginCombo("Rule", current_rule);
+  if (open) {
+    for (const auto& rule_entry : list) {
+      bool is_selected = (engine_.getRule().getName() == rule_entry.key);
+      if (ImGui::Selectable(rule_entry.key.c_str(), is_selected)) {
+        engine_.setRule(RuleRegistry::getInstance().make(rule_entry.key));
+      }
+      if (is_selected) ImGui::SetItemDefaultFocus();
+    }
+    ImGui::EndCombo();
+  }
+  if (disable) ImGui::EndDisabled();
 }
 
 void Renderer::renderBoundarySettings() {

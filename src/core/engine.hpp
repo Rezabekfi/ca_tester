@@ -2,6 +2,7 @@
 
 #include "grid.hpp"
 #include "rule.hpp"
+#include "rule_registry.hpp"
 #include <mutex>
 #include <atomic>
 #include <thread>
@@ -11,8 +12,8 @@
 
 class Engine {
 public:
-  Engine(std::size_t width, std::size_t height, std::unique_ptr<Rule> rule);
-  Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::unique_ptr<Rule> rule);
+  Engine(std::size_t width, std::size_t height, std::string rule_key);
+  Engine(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood, std::string rule_key); 
 
   void step();
   void start();

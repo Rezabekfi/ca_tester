@@ -157,12 +157,6 @@ bool ConvexHull::exists_oposite_marked_neighbor(uint8_t current_state, const std
   return false;
 }
 
-// returns pair of distinct neighbourhoods around ctx.x,ctx.y and nx,ny first std::vector is for x (meaning the point ctx.x,ctx.y) second for y (meaning the point nx,ny)
-// if both neighborhoods contain a positon that position wont appear in either of the returned vectors
-std::pair<std::vector<uint8_t>, std::vector<uint8_t>> ConvexHull::getDistinctNeighbourhoods(std::size_t nx, std::size_t ny, const RuleContext& ctx) const {
-}
-
-
 std::string ConvexHull::getName() const {
   return CONVEX_HULL_RULE_NAME;
 }

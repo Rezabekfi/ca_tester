@@ -1,4 +1,4 @@
-dilatace eroze implementovat
+dilatace eroze implementovat // DONE 
 rotace 
 rastrové prostředí řešit hlavně a použít na CA
 cíl opravení dilatace a eroze (maybe roatce a s danou osou nebo klidně nedanou osou) 

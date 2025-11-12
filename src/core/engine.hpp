@@ -20,6 +20,7 @@ public:
   void stop();
   void toggleRunning();
   void reset();
+  void clean();
 
   Grid& getGrid();
   void setSpeed(double speed); // speed in steps per second

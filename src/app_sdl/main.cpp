@@ -8,6 +8,8 @@
 int main(int argc, char* argv[]) {
   ConwayRule conway_rule;
   Engine e(50, 30, conway_rule.getName());
+  // e.setCalculatingDistances(true);
+  // e.setDistanceCalculator(ConvexHull::calculateDistances);
   Renderer r(e, 20);
   while (r.render()) {
     // loop until window closed

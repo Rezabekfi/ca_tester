@@ -16,6 +16,10 @@ Engine::Engine(std::size_t width, std::size_t height, uint8_t default_state, Bou
 void Engine::step() {
   {
     std::lock_guard<std::mutex> lock(mtx_);
+    if (iteration_.load(std::memory_order_relaxed) == 0) {
+      history_.clear();
+      history_.emplace_back(grid_.getGridValues());
+    }
     if (calculating_distances_.load(std::memory_order_relaxed) && distance_calculator_) {
       distance_calculator_(grid_.getGridValues(), grid_.getWidth(), grid_.getHeight(), grid_.getNeighborhood(), grid_.getBoundary());
     }
@@ -62,6 +66,17 @@ void Engine::reset() {
     history_.clear();
     history_.emplace_back(initial_state);
     iteration_.store(0, std::memory_order_relaxed);
+  }
+}
+
+void Engine::clean() {
+  stop();
+  {
+    std::lock_guard<std::mutex> lock(mtx_);
+    std::vector<uint8_t> empty_state(grid_.getWidth() * grid_.getHeight(), 0);
+    history_.pop_back();
+    grid_.setGridValues(empty_state);
+    history_.emplace_back(empty_state);
   }
 }
 

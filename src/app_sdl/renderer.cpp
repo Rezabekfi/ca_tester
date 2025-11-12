@@ -127,6 +127,14 @@ void Renderer::renderControls() {
       paused_ = true;
       engine_.reset();
     }
+    ImGui::SameLine();
+    if (paused_ && ImGui::Button("Clear")) {
+      engine_.clean();
+    } else if (!paused_) {
+      ImGui::BeginDisabled();
+      ImGui::Button("Clear");
+      ImGui::EndDisabled();
+    }
     // let user input iteration to jump to (only backwards)
     static uint64_t wanted_iteration = 0;
     ImGui::Text("Go to Iteration:");

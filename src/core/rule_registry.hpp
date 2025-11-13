@@ -25,6 +25,12 @@ public:
       return out;
   }
 
+  const EntryView get(const std::string& key) const {
+      auto it = entries_.find(key);
+      if (it == entries_.end()) throw std::runtime_error("Unknown rule: " + key);
+      return EntryView{key, it->second.description};
+  }
+
   std::unique_ptr<Rule> make(const std::string& key) const {
       auto it = entries_.find(key);
       if (it == entries_.end()) throw std::runtime_error("Unknown rule: " + key);

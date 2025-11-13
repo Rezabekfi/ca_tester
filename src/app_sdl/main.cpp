@@ -2,8 +2,7 @@
 #include "core/engine.hpp"
 #include "renderer.hpp"
 #include "convex_hull/convex_hull.hpp"
-#include "aditional_rules/dilation.hpp"
-#include "aditional_rules/erosion.hpp"
+#include "aditional_rules/all_aditional_rules.hpp"
 
 int main(int argc, char* argv[]) {
   ConwayRule conway_rule;

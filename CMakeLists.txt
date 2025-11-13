@@ -43,16 +43,16 @@ add_link_options(
   -mmacosx-version-min=${CMAKE_OSX_DEPLOYMENT_TARGET}
 )
 
-# --- Your targets (unchanged) ---
 add_library(ca_core
   src/core/grid.cpp
   src/core/engine.cpp
   src/core/rules_conway.cpp
   src/core/io.cpp
-  src/convex_hull/convex_hull.cpp
   src/core/rule_context.cpp
+  src/convex_hull/convex_hull.cpp
   src/aditional_rules/erosion.cpp
   src/aditional_rules/dilation.cpp
+  src/aditional_rules/fixing_rectangle.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

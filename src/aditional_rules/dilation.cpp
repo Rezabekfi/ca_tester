@@ -1,10 +1,6 @@
 #include "dilation.hpp"
 
 
-uint8_t DilationRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
-  return apply(current_state, neighbours);
-}
-
 uint8_t DilationRule::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
   if (current_state != 0) return current_state;
   for (auto neighbour : neighbours) {

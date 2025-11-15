@@ -6,12 +6,11 @@ maybe roatce a s danou osou nebo klidně nedanou osou
 kouknout na gregora a jeho pravidla
 pokus vyřešit úlohu na jednoduchém objektu s danou osou 
 konvexni + manhatan vzdálenost (kombinace pravidel z konvexni obalky)
-vyzkoušet narovnávání obdelníku přes metriku
-
+vyzkoušet narovnávání obdelníku přes metriku // TODO / ZEPTAT SE
 
 psát pouze 
 definice problému a teorie (kterou používám nebo ostatní používají)
 
 todo: 
 otočení toho obdélníku
-dilatace a eroze
+dilatace a eroze // DONE

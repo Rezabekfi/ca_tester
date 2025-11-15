@@ -5,6 +5,9 @@
 
 constexpr std::string ROTATION_RULE_NAME = "Rotation Rule";
 
+
+// NOTE: current implementation is cheating a bit because we take advantage of knowing whole grid instead of just neighbors which is not allowed by CA definition
+// For now it will stay like this and maybe in the future this will be changed or a new rule will be created
 class RotationRule: public Rule {
 public:
   

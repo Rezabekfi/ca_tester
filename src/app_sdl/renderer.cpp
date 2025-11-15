@@ -6,6 +6,7 @@
 #include <SDL.h>
 #include <stdexcept>
 #include "core/rule_registry.hpp"
+#include "convex_hull/convex_hull.hpp"
 
 
 Renderer::Renderer(Engine& engine, std::size_t cell_size)
@@ -187,6 +188,13 @@ void Renderer::renderRuleSettings() {
       bool is_selected = (engine_.getRule().getName() == rule_entry.key);
       if (ImGui::Selectable(rule_entry.key.c_str(), is_selected)) {
         engine_.setRule(RuleRegistry::getInstance().make(rule_entry.key));
+        if (rule_entry.key == CONVEX_HULL_RULE_NAME) {
+          engine_.setCalculatingDistances(true);
+          engine_.setDistanceCalculator(ConvexHull::calculateDistances);
+        } else {
+          engine_.setCalculatingDistances(false);
+          engine_.resetDistances();
+        }
       }
       if (is_selected) ImGui::SetItemDefaultFocus();
     }

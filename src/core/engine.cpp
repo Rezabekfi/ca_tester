@@ -179,3 +179,13 @@ void Engine::setDistanceCalculator(std::function<void(std::vector<uint8_t>&, std
   distance_calculator_ = calculator;
 }
 
+void Engine::resetDistances() {
+  std::lock_guard<std::mutex> lock(mtx_);
+  std::vector<uint8_t> reset_grid = grid_.getGridValues();
+  for (auto& cell : reset_grid) {
+    cell = static_cast<uint8_t>(cell & 0b00000011); // reset all but the two least significant bits
+  }
+  grid_.setGridValues(reset_grid);
+  setCalculatingDistances(false);
+}
+

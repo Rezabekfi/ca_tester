@@ -1,9 +1,8 @@
 dilatace eroze implementovat // DONE 
 cíl opravení dilatace a eroze // DONE
-rotace 
-rastrové prostředí řešit hlavně a použít na CA
-maybe roatce a s danou osou nebo klidně nedanou osou
-kouknout na gregora a jeho pravidla
+rotace // DONE
+rastrové prostředí řešit hlavně a použít na CA // DONE?
+kouknout na gregora a jeho pravidla // moc nevím k čemu to je ale DONE
 pokus vyřešit úlohu na jednoduchém objektu s danou osou 
 konvexni + manhatan vzdálenost (kombinace pravidel z konvexni obalky)
 vyzkoušet narovnávání obdelníku přes metriku // TODO / ZEPTAT SE

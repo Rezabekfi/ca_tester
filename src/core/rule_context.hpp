@@ -22,5 +22,8 @@ struct RuleContext {
                                                            std::size_t x2, std::size_t y2) const;
   std::vector<std::pair<int, int>> getNeighborhoodWithCoordinates(std::size_t x, std::size_t y) const;
   const Grid& getGrid() const { return grid; }
+
+  void setNeighborhood(Neighborhood n) { neighborhood = n; }
+  void setBoundary(Boundary b) { boundary = b; }
 };
 

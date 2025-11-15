@@ -34,8 +34,10 @@ public:
   void setNeighborhood(Neighborhood neighborhood);
   void setBoundary(Boundary boundary);
   void setRule(std::unique_ptr<Rule> rule);
+
   void setCalculatingDistances(bool calculating);
   bool isCalculatingDistances() const;
+  void resetDistances();
 
   void stepBack(std::size_t steps = 1);
   bool goToIteration(std::size_t iteration);

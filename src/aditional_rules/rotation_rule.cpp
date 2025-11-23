@@ -23,8 +23,8 @@ uint8_t RotationRule::apply(uint8_t current_state, const RuleContext& ctx, const
 std::pair<int, int> RotationRule::rotate_point(int x, int y, double degree) const {
   int rel_x = x - static_cast<int>(fixed_point_.first);
   int rel_y = y - static_cast<int>(fixed_point_.second);
-  int rotated_x = static_cast<int>(cos(degree * M_PI / 180.0) * rel_x - sin(degree * M_PI / 180.0) * rel_y);
-  int rotated_y = static_cast<int>(sin(degree * M_PI / 180.0) * rel_x + cos(degree * M_PI / 180.0) * rel_y);
+  int rotated_x = static_cast<int>(std::round(cos(degree * M_PI / 180.0) * rel_x - sin(degree * M_PI / 180.0) * rel_y));
+  int rotated_y = static_cast<int>(std::round(sin(degree * M_PI / 180.0) * rel_x + cos(degree * M_PI / 180.0) * rel_y));
   rotated_x += static_cast<int>(fixed_point_.first);
   rotated_y += static_cast<int>(fixed_point_.second);
   return {rotated_x, rotated_y};

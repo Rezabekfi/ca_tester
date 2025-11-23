@@ -8,7 +8,7 @@ bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size
   auto all_coords_to_check = ctx.getEdgeNeighborhoodWithCoordinates(ctx.x, ctx.y, nx, ny);
   // copy ctx so we can modify it
   RuleContext local_ctx = ctx;
-  local_ctx.setNeighborhood(Neighborhood::Moore);
+  local_ctx.setNeighborhood(Neighborhood::Moore); // COMMENT
   auto deltas = pick_deltas(ctx.neighborhood);
   // out of bounds function
   auto out_of_bounds = [&](int x, int y) {

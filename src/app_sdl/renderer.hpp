@@ -19,6 +19,7 @@ private:
   float min_left_;
   float splitter_w_;
   bool paused_;
+  bool light_mode_;
   bool autosize_os_window_;
   std::size_t iteration_;
   std::size_t iterations_per_step_;

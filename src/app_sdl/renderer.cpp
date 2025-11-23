@@ -278,6 +278,11 @@ void Renderer::renderGrid() {
           ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
           dl->AddRectFilled(a, b, fillColor);
         }
+        if (r == 15 && c == 25) {
+          ImVec2 a(p0.x + c * cellSize + 1, p0.y + r * cellSize + 1);
+          ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
+          dl->AddRectFilled(a, b, IM_COL32(255, 0, 0, 150));
+        }
       }
     }
     

@@ -19,7 +19,7 @@ private:
   float min_left_;
   float splitter_w_;
   bool paused_;
-  bool light_mode_;
+  bool light_mode_;          // <--- used for light/dark theme
   bool autosize_os_window_;
   std::size_t iteration_;
   std::size_t iterations_per_step_;
@@ -42,15 +42,14 @@ private:
   void renderCustomRuleEditor(); 
   void renderAbout();
 
-
-  bool drawGrid(float line_thickness = 1.0f, ImU32 gridColor = IM_COL32(50, 50, 50, 255), ImU32 fillColor = IM_COL32(200, 200, 200, 255));
-
-  // More private methods will be added as I figure out what is needed
+  bool drawGrid(float line_thickness = 1.0f,
+                ImU32 gridColor = IM_COL32(50, 50, 50, 255),
+                ImU32 fillColor = IM_COL32(200, 200, 200, 255));
 
   void setUpImGui();
   void tearDownImGui();
+  void applyImGuiTheme();    // <--- new helper
 
   bool sdl_init(); // TODO: consider renaming this
-
-
 };
+

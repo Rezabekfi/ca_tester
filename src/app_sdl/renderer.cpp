@@ -14,7 +14,6 @@ Renderer::Renderer(Engine& engine, std::size_t cell_size)
   if (!sdl_init()) {
     throw std::runtime_error("Failed to initialize SDL");
   }
-  setUpImGui();
   zoom_ = 1.0f;
   left_width_ = 300.0f;
   min_left_ = 220.0f;
@@ -28,6 +27,9 @@ Renderer::Renderer(Engine& engine, std::size_t cell_size)
   grid_cols_ = engine_.getGrid().getWidth();
   neighborhood_ = Neighborhood::Moore;
   boundary_ = Boundary::Wrap;
+  light_mode_ = false;      // start in dark mode by default
+
+  setUpImGui();
 }
 
 bool Renderer::render() {
@@ -57,7 +59,14 @@ bool Renderer::render() {
   ImGui::End();
 
   ImGui::Render();
-  SDL_SetRenderDrawColor(sdl_renderer_, 18, 18, 18, 255);
+
+  // Clear color depends on theme
+  if (light_mode_) {
+    SDL_SetRenderDrawColor(sdl_renderer_, 240, 240, 240, 255);
+  } else {
+    SDL_SetRenderDrawColor(sdl_renderer_, 18, 18, 18, 255);
+  }
+
   SDL_RenderClear(sdl_renderer_);
   ImGui_ImplSDLRenderer2_RenderDrawData(ImGui::GetDrawData(), sdl_renderer_);
   SDL_RenderPresent(sdl_renderer_);
@@ -93,6 +102,14 @@ void Renderer::renderControls() {
   {
     ImGui::Text("Simulation Controls");
     ImGui::Separator();
+
+    // Theme toggle
+    if (ImGui::Checkbox("Light mode", &light_mode_)) {
+      // Re-apply ImGui style whenever the theme changes
+      applyImGuiTheme();
+    }
+    ImGui::Separator();
+
     // display iteration
     ImGui::Text("Iteration: %zu", iteration_);
 
@@ -245,6 +262,7 @@ void Renderer::renderGridSettings() {
   }
 }
 
+
 void Renderer::renderGrid() {
   Grid& grid = engine_.getGrid();
   std::size_t rows = grid.getGridValues().size() / grid.getWidth();
@@ -255,21 +273,43 @@ void Renderer::renderGrid() {
   const float grid_w = cols * cellSize;
   const float grid_h = rows * cellSize;
   const float line_thickness = 1.0f;
-  const ImU32 gridColor = IM_COL32(50, 50, 50, 255);
-  const ImU32 fillColor = IM_COL32(200, 200, 200, 255);
+
+  // Theme-aware colors
+  const ImU32 gridColor   = light_mode_
+                            ? IM_COL32(200, 200, 200, 255)
+                            : IM_COL32(50, 50, 50, 255);
+  const ImU32 fillColor   = light_mode_
+                            ? IM_COL32(40, 40, 40, 255)
+                            : IM_COL32(200, 200, 200, 255);
+  const ImU32 bgColor     = light_mode_
+                            ? IM_COL32(250, 250, 250, 255)
+                            : IM_COL32(25, 25, 25, 255);
+  const ImU32 borderColor = light_mode_
+                            ? IM_COL32(100, 100, 100, 255)
+                            : IM_COL32(130, 130, 130, 255);
 
   ImGui::SameLine();
-  ImGui::BeginChild("GridPane", ImVec2(grid_w + 2.0f, grid_h + 2.0f), true, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+
+  // Remove padding so the child’s content region is exactly grid_w x grid_h
+  ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+  ImGui::BeginChild(
+      "GridPane",
+      ImVec2(grid_w, grid_h),   // exact grid size, no +2 fudge
+      false,                    // no border (we draw our own)
+      ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse
+  );
   {
     ImVec2 p0 = ImGui::GetCursorScreenPos(); // top-left of the canvas
-    const ImVec2 size(grid_w, grid_h); 
-    const char* id = "##grid";
-    ImGui::InvisibleButton(id, size);
+    const ImVec2 size(grid_w, grid_h);
+    ImGui::InvisibleButton("##grid", size);
     bool hovered = ImGui::IsItemHovered();
     bool active  = ImGui::IsItemActive();
     ImDrawList* dl = ImGui::GetWindowDrawList();
-    dl->AddRectFilled(p0, ImVec2(p0.x + size.x, p0.y + size.y), IM_COL32(25, 25, 25, 255));
-    dl->AddRect(p0, ImVec2(p0.x + size.x, p0.y + size.y), IM_COL32(130, 130, 130, 255), 0.0f, 0, line_thickness);
+
+    // Background & border
+    dl->AddRectFilled(p0, ImVec2(p0.x + size.x, p0.y + size.y), bgColor);
+    dl->AddRect(p0, ImVec2(p0.x + size.x, p0.y + size.y), borderColor, 0.0f, 0, line_thickness);
+
     // Draw filled cells
     for (std::size_t r = 0; r < rows; ++r) {
       for (std::size_t c = 0; c < cols; ++c) {
@@ -316,14 +356,19 @@ void Renderer::renderGrid() {
             cells[idx] = newVal;
             grid.setCell(col, row, cells[idx]);
           }
+
+          // Optional: you could add right-click erase, etc.
         }
+
+        // Highlight hovered cell
+        ImVec2 a(p0.x + col * cellSize + 1,       p0.y + row * cellSize + 1);
+        ImVec2 b(p0.x + (col + 1) * cellSize - 1, p0.y + (row + 1) * cellSize - 1);
+        dl->AddRect(a, b, IM_COL32(255, 255, 255, 80));
       }
-      ImVec2 a(p0.x + col * cellSize + 1,       p0.y + row * cellSize + 1);
-      ImVec2 b(p0.x + (col + 1) * cellSize - 1, p0.y + (row + 1) * cellSize - 1);
-      dl->AddRect(a, b, IM_COL32(255, 255, 255, 80));
     }
   }
   ImGui::EndChild();
+  ImGui::PopStyleVar();
 }
 
 Renderer::~Renderer() {
@@ -335,9 +380,19 @@ void Renderer::setUpImGui() {
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO(); (void)io;
   io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-  ImGui::StyleColorsDark();
+
+  applyImGuiTheme(); // use current theme
+
   ImGui_ImplSDL2_InitForSDLRenderer(window_, sdl_renderer_);
   ImGui_ImplSDLRenderer2_Init(sdl_renderer_);
+}
+
+void Renderer::applyImGuiTheme() {
+  if (light_mode_) {
+    ImGui::StyleColorsLight();
+  } else {
+    ImGui::StyleColorsDark();
+  }
 }
 
 void Renderer::tearDownImGui() {

@@ -55,6 +55,7 @@ add_library(ca_core
   src/aditional_rules/fixing_rectangle.cpp
   src/aditional_rules/rotation_rule.cpp
   src/aditional_rules/fix_rotate_fix_rule.cpp
+  src/aditional_rules/wolfram_rules.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

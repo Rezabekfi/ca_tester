@@ -27,7 +27,8 @@ Renderer::Renderer(Engine& engine, std::size_t cell_size)
   grid_cols_ = engine_.getGrid().getWidth();
   neighborhood_ = Neighborhood::Moore;
   boundary_ = Boundary::Wrap;
-  light_mode_ = false;      // start in dark mode by default
+  light_mode_ = false;
+  show_grid_ = true;
 
   setUpImGui();
 }
@@ -108,6 +109,7 @@ void Renderer::renderControls() {
       // Re-apply ImGui style whenever the theme changes
       applyImGuiTheme();
     }
+    ImGui::Checkbox("Show grid", &show_grid_);
     ImGui::Separator();
 
     // display iteration
@@ -326,14 +328,17 @@ void Renderer::renderGrid() {
       }
     }
     
-    // Draw grid lines
-    for (std::size_t c = 1; c < cols; ++c) {
-      float x = p0.x + c * cellSize;
-      dl->AddLine(ImVec2(x, p0.y), ImVec2(x, p0.y + size.y), gridColor, line_thickness);
-    }
-    for (std::size_t r = 1; r < rows; ++r) {
-      float y = p0.y + r * cellSize;
-      dl->AddLine(ImVec2(p0.x, y), ImVec2(p0.x + size.x, y), gridColor, line_thickness);
+    if (show_grid_) {
+        for (std::size_t c = 1; c < cols; ++c) {
+            float x = p0.x + c * cellSize;
+            dl->AddLine(ImVec2(x, p0.y), ImVec2(x, p0.y + size.y),
+                        gridColor, line_thickness);
+        }
+        for (std::size_t r = 1; r < rows; ++r) {
+            float y = p0.y + r * cellSize;
+            dl->AddLine(ImVec2(p0.x, y), ImVec2(p0.x + size.x, y),
+                        gridColor, line_thickness);
+        }
     }
 
     // Interaction: click/drag to toggle or paint

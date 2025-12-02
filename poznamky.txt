@@ -1,30 +1,12 @@
-dilatace eroze implementovat // DONE 
-cíl opravení dilatace a eroze // DONE
-rotace // DONE ale s podváděním (ale vím jak bez skoro)
-rastrové prostředí řešit hlavně a použít na CA // DONE?
-kouknout na gregora a jeho pravidla // moc nevím k čemu to je ale DONE
-pokus vyřešit úlohu na jednoduchém objektu s danou osou // otočení DONE ale vyžaduje to člověka co to ohlídá kdy to má skončit což je špatně
-konvexni + manhatan vzdálenost (kombinace pravidel z konvexni obalky) // Není done mám tam potíž
-vyzkoušet narovnávání obdelníku přes metriku // vůbec nevím 
-
 psát pouze 
 definice problému a teorie (kterou používám nebo ostatní používají) // psaní teorie good, ale definice problému chybí a nejsem si jistý jak na to
-
-todo: 
-otočení toho obdélníku // hotovo přes cheating + vím jak na to bez cheatingu, ale nevím jak to zastavit
-dilatace a eroze // DONE
-
-
-19.11
-SHOW:
-dilatace a eroze funguje + fix rectangle rule + fix rotate rectangle rule (zmínit že to je cheating)
-Možná ukázat konvexní obálku a manhattan distance s tím, že tam je bug který zatím nevím jak opravit
-PROBLÉMY A OTÁZKY:
-Nevím jak zastavit rotaci objektu bez zásahu člověka
-Problém s "cheatingem". U definice CA pravidla je, že se zakazují akce na dálku a nevím, zda v pravidlech mohu používat informace mimo lokální okolí i přestože by byly fixní jako je osa otáčení nebo střed objektu.
-Nevím jestli mohu pracovat s indexy pixelů v pravidlech (respektive myslím, že ne, ale vím teoreticky jak to obejít)
 
 TODO:
 klidně dirty a pak to udělt čisté
 opravit convex pro von neumann nebo zkusit Davida
 v podstatě porovnat metody (jako třeba jak často opravovat atd)
+napsat pravidlo pro rotaci s menším množstvím podvádění
+
+otázky: 3.12. 2025
+definice problému co to přesně znamená
+kouknout na gregora a jeho pravidla

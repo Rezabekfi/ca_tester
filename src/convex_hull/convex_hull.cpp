@@ -6,11 +6,9 @@
   // check if you can go from main_index (meaning one point of the neighborhood of ctx.x,ctx.y) to the second_index if yes return false they are not distinct else return true
 bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size_t ny, std::size_t main_index, std::size_t second_index, uint8_t goal_distance) const {
   auto all_coords_to_check = ctx.getEdgeNeighborhoodWithCoordinates(ctx.x, ctx.y, nx, ny);
-  // copy ctx so we can modify it
   RuleContext local_ctx = ctx;
   local_ctx.setNeighborhood(Neighborhood::Moore); // COMMENT
   auto deltas = pick_deltas(ctx.neighborhood);
-  // out of bounds function
   auto out_of_bounds = [&](int x, int y) {
     return (x < 0 || y < 0 || x >= static_cast<int>(ctx.getGrid().getWidth()) || y >= static_cast<int>(ctx.getGrid().getHeight()));
   };

@@ -50,9 +50,9 @@ uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const s
 
   bool mark = false;
   mark |= vertex_center(current_state, ctx, neighbours);
-  mark |= edge_center(current_state, ctx, neighbours);
-  mark |= back_mark(current_state, neighbours);
-  mark |= exists_oposite_marked_neighbor(current_state, neighbours);
+  // mark |= edge_center(current_state, ctx, neighbours);
+  // mark |= back_mark(current_state, neighbours);
+  // mark |= exists_oposite_marked_neighbor(current_state, neighbours);
   return mark ? mark_cell(current_state) : current_state;
 }
 
@@ -97,7 +97,7 @@ bool ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx, co
   uint8_t wanted_dist = get_distance(retreat_distance(current_state)); 
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
-    if ((get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist) && distinct_sets(ctx, ctx.x, ctx.y, i, i + half_size, wanted_dist)) {
+    if ((get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist)){ // distinct_sets(ctx, ctx.x, ctx.y, i, i + half_size, wanted_dist)) {
      return true;
     }
   }

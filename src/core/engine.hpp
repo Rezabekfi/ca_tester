@@ -23,6 +23,7 @@ public:
   void clean();
 
   Grid& getGrid();
+  Grid getGridConst() const;
   void setSpeed(double speed); // speed in steps per second
   double getSpeed() const;
   Rule& getRule() const;

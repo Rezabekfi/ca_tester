@@ -189,3 +189,6 @@ void Engine::resetDistances() {
   setCalculatingDistances(false);
 }
 
+Grid Engine::getGridConst() const {
+  return grid_;
+}

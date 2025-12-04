@@ -7,7 +7,9 @@
 #include <stdexcept>
 #include "core/rule_registry.hpp"
 #include "convex_hull/convex_hull.hpp"
-
+#include <filesystem>
+#include "core/io.hpp"
+#include <iostream>
 
 Renderer::Renderer(Engine& engine, std::size_t cell_size)
   : engine_(engine), cell_size_(cell_size) {
@@ -172,6 +174,7 @@ void Renderer::renderControls() {
     renderRuleSettings();
     ImGui::Separator();
     renderGridSettings();
+    renderExportImportButtons();
   }
   ImGui::EndChild();
 
@@ -437,4 +440,65 @@ bool Renderer::sdl_init() {
 void Renderer::renderAbout() {
   // TODO: implement this
 }
+
+void Renderer::renderExportImportButtons() {
+  ImGui::Text("Save/Load Grid:");
+  if (paused_ && ImGui::Button("Save Grid")) {
+    ImGui::OpenPopup("Save Grid");
+  }
+
+  if (ImGui::BeginPopup("Save Grid")) {
+    static char save_filename[128] = "grid_save.json";
+    static bool use_default_save_folder = true;
+    ImGui::InputText("Filename", save_filename, IM_ARRAYSIZE(save_filename));
+    ImGui::Checkbox("Use Default Save Folder", &use_default_save_folder);
+    if (ImGui::Button("Save")) {
+      bool success = IO::instance().saveGridToFile(engine_, std::string(save_filename), use_default_save_folder);
+      ImGui::CloseCurrentPopup();
+      if (!success) {
+        // show message box error
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+                                 "Save Error",
+                                 "Failed to save the grid to file.",
+                                 window_);
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Cancel")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+
+
+  if (paused_ && ImGui::Button("Load Grid")) {
+    ImGui::OpenPopup("Load Grid");
+  }
+
+  if (ImGui::BeginPopup("Load Grid")) {
+    static char load_filename[128] = "grid_save.json";
+    ImGui::InputText("Filename", load_filename, IM_ARRAYSIZE(load_filename));
+    if (ImGui::Button("Load")) {
+      bool success = IO::instance().loadGridFromFile(engine_, std::string(load_filename));
+      ImGui::CloseCurrentPopup();
+      if (!success) {
+        // show message box error
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR,
+                                 "Load Error",
+                                 "Failed to load the grid from file.",
+                                 window_);
+      }
+    }
+    ImGui::SameLine();
+    if (ImGui::Button("Cancel")) {
+      ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+  }
+}
+
+
+
+
+
 

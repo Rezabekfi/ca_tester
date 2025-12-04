@@ -43,6 +43,8 @@ private:
   void renderCustomRuleEditor(); 
   void renderAbout();
 
+  void renderExportImportButtons();
+
   bool drawGrid(float line_thickness = 1.0f,
                 ImU32 gridColor = IM_COL32(50, 50, 50, 255),
                 ImU32 fillColor = IM_COL32(200, 200, 200, 255));

@@ -3,10 +3,10 @@ definice problému a teorie (kterou používám nebo ostatní používají) // p
 
 TODO:
 klidně dirty a pak to udělt čisté
-opravit convex pro von neumann nebo zkusit Davida
+opravit convex pro von neumann nebo zkusit Davida // DONE 
 v podstatě porovnat metody (jako třeba jak často opravovat atd)
 napsat pravidlo pro rotaci s menším množstvím podvádění
 
 otázky: 3.12. 2025
 definice problému co to přesně znamená
-kouknout na gregora a jeho pravidla
+kouknout na gregora a jeho pravidla k čemu?

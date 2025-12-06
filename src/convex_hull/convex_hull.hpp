@@ -10,6 +10,9 @@ struct CellBits {
   static constexpr uint8_t MARK_MASK = 0x02;
   static constexpr uint8_t DIST_MASK = 0x0C; // bits 2..3
   static constexpr uint8_t DIST_SHIFT = 2;
+  // bit 4 and above aren't used in the referenced algorithm but we will use bit 4 and 5 for marking cells added by rule vertex_center
+  static constexpr uint8_t CENTER_CELL_MASK = 0x10;
+  static constexpr uint8_t UNUSED_CENTER_CELL_MASK = 0x20;
 };
 
 inline constexpr bool is_seed(uint8_t s)              { return (s & CellBits::SEED_MASK) != 0; }
@@ -23,6 +26,15 @@ inline constexpr uint8_t with_seed(uint8_t s, bool v) {
 }
 inline constexpr uint8_t mark_cell(uint8_t s)         { return s |  CellBits::MARK_MASK; }
 inline constexpr uint8_t unmark_cell(uint8_t s)       { return s & ~CellBits::MARK_MASK; }
+
+inline constexpr uint8_t mark_center_cell(uint8_t s)    { return s |  CellBits::CENTER_CELL_MASK; }
+inline constexpr uint8_t unmark_center_cell(uint8_t s)  { return s & ~CellBits::CENTER_CELL_MASK; }
+inline constexpr bool is_center_cell(uint8_t s)         { return (s & CellBits::CENTER_CELL_MASK) != 0; }
+
+inline constexpr uint8_t mark_unused_center_cell(uint8_t s)    { return s |  CellBits::UNUSED_CENTER_CELL_MASK; }
+inline constexpr uint8_t unmark_unused_center_cell(uint8_t s)  { return s & ~CellBits::UNUSED_CENTER_CELL_MASK; }
+inline constexpr bool is_unused_center_cell(uint8_t s)         { return (s & CellBits::UNUSED_CENTER_CELL_MASK) != 0; }
+
 
 inline constexpr uint8_t set_distance(uint8_t s, uint8_t d) {
   d = static_cast<uint8_t>(d % 3);
@@ -66,8 +78,8 @@ public:
   static inline AutoRegisterRule<ConvexHull> auto_register_convex_hull{CONVEX_HULL_RULE_NAME, "Convex Hull rule that computes the convex hull of a set of seed cells."};
 
 private:
-  bool edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const;
-  bool vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const;
+  uint8_t edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const;
+  uint8_t vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const; // only ones using return value uint8_t instead of bool because we need to know additional marks so we modify the cell even if it won't end up being marked
   bool back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool exists_oposite_marked_neighbor(uint8_t current_state, const std::vector<uint8_t>& neighbours) const;
   bool distinct_sets(const RuleContext& ctx, std::size_t nx, std::size_t ny, std::size_t index_x, std::size_t index_y, uint8_t goal_distance) const;

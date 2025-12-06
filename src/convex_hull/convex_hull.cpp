@@ -6,8 +6,6 @@
   // check if you can go from main_index (meaning one point of the neighborhood of ctx.x,ctx.y) to the second_index if yes return false they are not distinct else return true
 bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size_t ny, std::size_t main_index, std::size_t second_index, uint8_t goal_distance) const {
   auto all_coords_to_check = ctx.getEdgeNeighborhoodWithCoordinates(ctx.x, ctx.y, nx, ny);
-  RuleContext local_ctx = ctx;
-  local_ctx.setNeighborhood(Neighborhood::Moore); // COMMENT
   auto deltas = pick_deltas(ctx.neighborhood);
   auto out_of_bounds = [&](int x, int y) {
     return (x < 0 || y < 0 || x >= static_cast<int>(ctx.getGrid().getWidth()) || y >= static_cast<int>(ctx.getGrid().getHeight()));
@@ -27,7 +25,7 @@ bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size
       return false; // found a path to the second index
     }
     // get neighbors of current
-    auto neighbors = local_ctx.getNeighborhoodWithCoordinates(static_cast<std::size_t>(current.first), static_cast<std::size_t>(current.second));
+    auto neighbors = ctx.getNeighborhoodWithCoordinates(static_cast<std::size_t>(current.first), static_cast<std::size_t>(current.second));
     for (const auto& neighbor : neighbors) {
       // skip if out of bounds and if not in all_coords_to_check
       if (out_of_bounds(neighbor.first, neighbor.second)) {
@@ -49,10 +47,16 @@ uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const s
   if (is_seed(current_state) || is_marked(current_state)) return current_state;
 
   bool mark = false;
-  mark |= vertex_center(current_state, ctx, neighbours);
-  // mark |= edge_center(current_state, ctx, neighbours);
-  // mark |= back_mark(current_state, neighbours);
-  // mark |= exists_oposite_marked_neighbor(current_state, neighbours);
+  current_state = vertex_center(current_state, ctx, neighbours);
+  if (is_marked(current_state)) {
+    return current_state; // already marked as center cell
+  }
+  current_state = edge_center(current_state, ctx, neighbours);
+  if (is_marked(current_state)) {
+    return current_state; // already marked as center cell
+  }
+  mark |= back_mark(current_state, neighbours);
+  mark |= exists_oposite_marked_neighbor(current_state, neighbours);
   return mark ? mark_cell(current_state) : current_state;
 }
 
@@ -84,30 +88,44 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
   }
 }
 
-bool ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+uint8_t ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   uint8_t dist_x = get_distance(current_state);
   bool all_same = true;
+  bool potential_unused_center = false;
   for (auto neighbour :neighbours) {
+    if (is_center_cell(neighbour) || is_unused_center_cell(neighbour)) {
+      potential_unused_center = true;
+    }
     if (get_distance(neighbour) != dist_x) {
       all_same = false;
-      break;
     }
   }
   if (all_same) dist_x = get_distance(advance_distance(current_state));
   uint8_t wanted_dist = get_distance(retreat_distance(current_state)); 
   std::size_t half_size = neighbours.size() / 2;
   for (std::size_t i = 0; i < half_size; ++i) {
-    if ((get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist)){ // distinct_sets(ctx, ctx.x, ctx.y, i, i + half_size, wanted_dist)) {
-     return true;
+    if ((get_distance(neighbours[i]) == wanted_dist && get_distance(neighbours[i + half_size]) == wanted_dist) && distinct_sets(ctx, ctx.x, ctx.y, i, i + half_size, wanted_dist)) {
+      if (potential_unused_center) {
+        return mark_unused_center_cell(current_state);
+      }
+      return mark_cell(mark_center_cell(current_state));
     }
   }
-  return false;
+  return current_state;
 }
 
-bool ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+uint8_t ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   uint8_t dist_x = get_distance(current_state);
   auto deltas = pick_deltas(ctx.neighborhood);
+  bool potential_unused_center = false;
   const auto& gridVals = ctx.getGrid().getGridValues();
+
+  for (auto neighbour :neighbours) {
+    if (is_center_cell(neighbour) || is_unused_center_cell(neighbour)) {
+      potential_unused_center = true;
+      break;
+    }
+  }
   
   for (std::size_t i = 0; i < deltas.size(); ++i) {
     int nx = static_cast<int>(ctx.x) + deltas[i].first;
@@ -127,21 +145,22 @@ bool ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, cons
     for (std::size_t j = 0; j < neighbours.size(); ++j) {
       if (get_distance(y_neighbors[j]) == wanted_dist) {
         std::size_t opposite_index = (j + (neighbours.size() / 2)) % neighbours.size();
-        if (get_distance(neighbours[opposite_index]) == wanted_dist) {
-          if (distinct_sets(ctx, nx, ny, opposite_index, j, wanted_dist)) {
-            return true;
-          } 
+        if (get_distance(neighbours[opposite_index]) == wanted_dist && distinct_sets(ctx, nx, ny, opposite_index, j, wanted_dist)) {
+          if (potential_unused_center) {
+            return mark_unused_center_cell(current_state);
+          }
+          return mark_cell(mark_center_cell(current_state));
         }
       }
     }
   }
-  return false;
+  return current_state;
 }
 
 bool ConvexHull::back_mark(uint8_t current_state, const std::vector<uint8_t>& neighbours) const {
   uint8_t wanted_value = create_cell(false, true, get_distance(advance_distance(current_state))); // not seed, marked, distance advanced by one
   for (auto neighbour : neighbours) {
-    if (neighbour == wanted_value) {
+    if (unmark_center_cell(unmark_unused_center_cell(neighbour)) == wanted_value) { // we are interested only in marked cells and we do now care if they are center or unused center
       return true;
     }
   }

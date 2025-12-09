@@ -24,6 +24,7 @@ void Engine::step() {
       distance_calculator_(grid_.getGridValues(), grid_.getWidth(), grid_.getHeight(), grid_.getNeighborhood(), grid_.getBoundary());
     }
     grid_.step(*rule_);
+    grid_.setIteration(iteration_.load(std::memory_order_relaxed) + 1);
     history_.emplace_back(grid_.getGridValues());
   }
   iteration_.fetch_add(1, std::memory_order_relaxed);

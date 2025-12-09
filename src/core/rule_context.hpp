@@ -25,5 +25,9 @@ struct RuleContext {
 
   void setNeighborhood(Neighborhood n) { neighborhood = n; }
   void setBoundary(Boundary b) { boundary = b; }
+
+  std::size_t getIteration() const;
+
+
 };
 

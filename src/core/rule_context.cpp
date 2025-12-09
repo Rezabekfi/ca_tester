@@ -43,3 +43,7 @@ std::vector<std::pair<int, int>> RuleContext::getNeighborhoodWithCoordinates(std
     return coords;
 }
 
+std::size_t RuleContext::getIteration() const {
+    return grid.getIteration();
+}
+

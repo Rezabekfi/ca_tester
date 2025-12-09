@@ -77,9 +77,14 @@ public:
 
   void setBoundary(Boundary boundary);
   void setNeighborhood(Neighborhood neighborhood);
+  void setWidth(std::size_t width);
+  void setHeight(std::size_t height);
+  void setIteration(std::size_t iteration);
+
 
   std::size_t getWidth() const;
   std::size_t getHeight() const;
+  std::size_t getIteration() const;
   Boundary getBoundary() const;
   Neighborhood getNeighborhood() const;
 
@@ -90,6 +95,7 @@ public:
 private:
   std::size_t width_;
   std::size_t height_;
+  std::size_t iteration_;
   Boundary boundary_;
   Neighborhood neighborhood_;
   std::vector<uint8_t> cells_;

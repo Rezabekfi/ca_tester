@@ -3,6 +3,7 @@
 #include <exception>
 #include "json.hpp"
 #include <filesystem>
+#include "convex_hull/convex_hull.hpp"
 
 bool IO::saveGridToFile(const Engine& engine, const std::string& filename, bool use_default_folder) {
   auto grid = engine.getGridConst();
@@ -53,6 +54,17 @@ bool IO::loadGridFromFile(Engine& engine, const std::string& filename) {
     engine.setNeighborhood(neighborhood);
     engine.setBoundary(boundary);
     engine.setRule(RuleRegistry::getInstance().make(rule_name));
+
+    // TODO: handle this differently
+    if (rule_name == CONVEX_HULL_RULE_NAME) {
+      engine.setCalculatingDistances(true);
+      engine.setDistanceCalculator(ConvexHull::calculateDistances);
+    } else {
+      engine.setCalculatingDistances(false);
+      engine.resetDistances();
+    }
+
+
   } catch (const std::exception& e) {
     return false;
   }

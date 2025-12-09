@@ -118,3 +118,21 @@ Neighborhood Grid::getNeighborhood() const {
 const std::vector<uint8_t>& Grid::getGridValues() const {
   return cells_;
 }
+
+std::size_t Grid::getIteration() const {
+  return iteration_;
+}
+void Grid::setIteration(std::size_t iteration) {
+  iteration_ = iteration;
+}
+
+void Grid::setHeight(std::size_t height) {
+  height_ = height;
+}
+
+void Grid::setWidth(std::size_t width) {
+  width_ = width;
+}
+
+
+

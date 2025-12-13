@@ -7,6 +7,13 @@ opravit convex pro von neumann nebo zkusit Davida // DONE
 v podstatě porovnat metody (jako třeba jak často opravovat atd)
 napsat pravidlo pro rotaci s menším množstvím podvádění
 
-otázky: 3.12. 2025
-definice problému co to přesně znamená
-kouknout na gregora a jeho pravidla k čemu?
+TODO:
+zkusit implementovat v konvexní obálce (střídání 8 a 4 okolí)
+napsat report o jednotlivých metodách a zhodnotit výsledky pro a proti // důležité
+vyzkoušet všechny metody a jednu dodělat pořádně
+co psát v lednu:
+existující metoda (state of the art)
+Lukáš Hruda 
+Leden idálně mít hotovou terii + state of the art (všechno až k popisu mojí metody)
+nejpozději do 20.1. 2026
+report ideálně začátkem ledna třeba do 10.1.

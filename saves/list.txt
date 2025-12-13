@@ -1,0 +1,10 @@
+saves/corners/1.json 
+saves/corners/2.json 
+saves/corners/3.json 
+
+saves/damaged_rectangles/1.json
+saves/damaged_rectangles/2.json
+saves/damaged_rectangles/issue_example_1.json
+
+saves/damaged_rectangles/main_example.json
+saves/corners/main_example.json

@@ -14,6 +14,6 @@ vyzkoušet všechny metody a jednu dodělat pořádně
 co psát v lednu:
 existující metoda (state of the art)
 Lukáš Hruda 
-Leden idálně mít hotovou terii + state of the art (všechno až k popisu mojí metody)
+Leden idálně mít hotovou teorii + state of the art (všechno až k popisu mojí metody)
 nejpozději do 20.1. 2026
 report ideálně začátkem ledna třeba do 10.1.

@@ -323,6 +323,12 @@ void Renderer::renderGrid() {
           ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
           dl->AddRectFilled(a, b, fillColor);
         }
+        if (r == 15 && c == 25 && !light_mode_) {
+          // highlight middle cell for testing
+          ImVec2 a(p0.x + c * cellSize + 3, p0.y + r * cellSize + 3);
+          ImVec2 b(p0.x + (c + 1) * cellSize - 3, p0.y + (r + 1) * cellSize - 3);
+          dl->AddRectFilled(a, b, IM_COL32(0, 255, 0, 200));
+        }
         // if (is_center_cell(cells[r * cols + c]) || is_unused_center_cell(cells[r * cols + c])) {
         //   ImVec2 a(p0.x + c * cellSize + 3, p0.y + r * cellSize + 3);
         //   ImVec2 b(p0.x + (c + 1) * cellSize - 3, p0.y + (r + 1) * cellSize - 3);

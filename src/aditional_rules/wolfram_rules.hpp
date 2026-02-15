@@ -12,7 +12,7 @@ constexpr std::string WOLFRAM_RULE_NAME = "Wolfram Rule xx";
 class WolframRule: public Rule {
 public:
   WolframRule(uint8_t rule_number);
-  WolframRule() : WolframRule(90) {} 
+  WolframRule() : WolframRule(54) {}
   ~WolframRule() override = default;
 
   uint8_t apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const override;

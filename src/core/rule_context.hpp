@@ -14,6 +14,7 @@ struct RuleContext {
   std::size_t y;
   Neighborhood neighborhood;
   Boundary boundary;
+  std::size_t radius;
 
   std::vector<uint8_t> getNeighbors(std::size_t px, std::size_t py) const;
   std::vector<uint8_t> getEdgeNeighborhood(std::size_t x1, std::size_t y1,
@@ -25,6 +26,10 @@ struct RuleContext {
 
   void setNeighborhood(Neighborhood n) { neighborhood = n; }
   void setBoundary(Boundary b) { boundary = b; }
+
+  void setRadius(std::size_t r) { radius = r; }
+  
+  std::size_t getRadius() const { return radius; }
 
   std::size_t getIteration() const;
 

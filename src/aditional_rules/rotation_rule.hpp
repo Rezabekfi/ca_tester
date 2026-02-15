@@ -26,6 +26,6 @@ public:
   inline static AutoRegisterRule<RotationRule> auto_register{ROTATION_RULE_NAME, "A rule that rotates cell states based on their neighbors."};
 private:
   std::pair<std::size_t, std::size_t> fixed_point_{25, 15};
-  double rotation_degree_{45.0};
+  double rotation_degree_{5.0};
   std::pair<int, int> rotate_point(int x, int y, double degree) const;
 };

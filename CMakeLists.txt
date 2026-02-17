@@ -57,6 +57,7 @@ add_library(ca_core
   src/aditional_rules/fix_rotate_fix_rule.cpp
   src/aditional_rules/wolfram_rules.cpp
   src/aditional_rules/line_completor.cpp
+  src/aditional_rules/clearing_rule.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

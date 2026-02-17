@@ -12,10 +12,6 @@ uint8_t LineCompletorRule::apply(uint8_t current_state, const RuleContext& ctx, 
   std::size_t dead_count_line = 0;
   std::size_t dead_count_column = 0;
 
-  if (current_state == 1) {
-    return current_state; // if already active, do nothing
-  }
-
   if (line_radius_ == 0) {
     line_radius_ = ctx.getRadius();
   }
@@ -33,7 +29,6 @@ uint8_t LineCompletorRule::apply(uint8_t current_state, const RuleContext& ctx, 
     (in_bounds(static_cast<int>(ctx.x), static_cast<int>(ctx.y) + static_cast<int>(i)) && grid_values[(ctx.y + i) * ctx.getGrid().getWidth() + ctx.x] > 0) ? ++active_count_column : ++dead_count_column;
     (in_bounds(static_cast<int>(ctx.x), static_cast<int>(ctx.y) - static_cast<int>(i)) && grid_values[(ctx.y - i) * ctx.getGrid().getWidth() + ctx.x] > 0) ? ++active_count_column : ++dead_count_column;
   }
-
 
   return (active_count_line > line_radius_ || active_count_column > line_radius_) ? 1 : current_state;
 }

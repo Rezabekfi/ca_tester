@@ -6,4 +6,5 @@
 #include "aditional_rules/rotation_rule.hpp"
 #include "aditional_rules/fix_rotate_fix_rule.hpp"
 #include "aditional_rules/wolfram_rules.hpp"
+#include "aditional_rules/clearing_rule.hpp"
 #include "aditional_rules/line_completor.hpp"

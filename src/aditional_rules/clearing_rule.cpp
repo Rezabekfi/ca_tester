@@ -7,6 +7,9 @@ uint8_t ClearingRule::apply(uint8_t current_state, std::vector<uint8_t> neighbou
 
 uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   // the logic is basically "if I am in the line or corner I will stay on otherwise I will die"
+  if (current_state == 0) {
+    return 0; // if the cell is already dead, it stays dead
+  }
   auto deltas = pick_deltas(ctx.getNeighborhood());
   auto grid_values = ctx.getGrid().getGridValues();
 

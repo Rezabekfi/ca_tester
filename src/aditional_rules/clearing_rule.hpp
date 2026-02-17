@@ -8,26 +8,24 @@ constexpr std::string CLEARING_RULE_NAME = "Clearing Rule";
 
 // configurations for Moore
 // configurations are ordered in the same way as deltas_moore
-// TODO: I did a mistake here all of the configs are wrong by one index because it is from top middle clockwise but I ordered them from top left clockwise
-// WARNING: The rule doesnt work unless the configs are fixed
 constexpr std::array<std::array<uint8_t, 8>, 14> moore_clearing_configs = {{
   // lines 
-  {0,1,0,0,0,1,0,0},
-  {0,0,0,1,0,0,0,1},
+  {0,0,1,0,0,0,1,0},
+  {1,0,0,0,1,0,0,0},
   // corners
-  {0,0,0,1,0,1,0,0},
-  {0,1,0,1,0,0,0,0},
-  {0,1,0,0,0,0,0,1},
-  {0,0,0,0,0,1,0,1},
+  {0,0,0,0,1,0,1,0},
+  {0,0,1,0,1,0,0,0},
+  {1,0,1,0,0,0,0,0},
+  {1,0,0,0,0,0,1,0},
   // corners but a pixel to one side (meaning this is the only one with 4 points including current)
-  {0,1,1,0,0,1,0,0},
-  {0,1,0,0,1,1,0,0},
-  {1,0,0,1,0,0,0,1},
-  {0,0,1,1,0,0,0,1},
-  {0,1,0,0,0,1,1,0},
-  {1,1,0,0,0,1,0,0},
-  {0,0,0,1,1,0,0,1},
-  {0,0,0,1,0,0,1,1}
+  {0,0,1,1,0,0,1,0},
+  {0,0,1,0,0,1,1,0},
+  {1,1,0,0,1,0,0,0},
+  {1,0,0,1,1,0,0,0},
+  {0,0,1,0,0,0,1,1},
+  {0,1,1,0,0,0,1,0},
+  {1,0,0,0,1,1,0,0},
+  {1,0,0,0,1,0,0,1}
 }};
 
 class ClearingRule: public Rule {

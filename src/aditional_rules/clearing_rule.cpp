@@ -26,9 +26,14 @@ uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const
     }
     // compare structure of neighbours to the possible 14 configurations of line and corner in moore neighborhood and if it doesnt match any of them kill the cell
     for (const auto& config : moore_clearing_configs) {
-      if (configuration == config) {
-        return 1;
+      bool match = true;
+      for (std::size_t i = 0; i < deltas.size(); ++i) {
+        if (config[i] != J && configuration[i] != config[i]) {
+          match = false;
+          break;
+        }
       }
+      if (match) return current_state;
     }
     return 0; // does not match any configuration, kill the cell
   } else {

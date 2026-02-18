@@ -6,26 +6,29 @@
 
 constexpr std::string CLEARING_RULE_NAME = "Clearing Rule";
 
-// configurations for Moore
-// configurations are ordered in the same way as deltas_moore
-constexpr std::array<std::array<uint8_t, 8>, 14> moore_clearing_configs = {{
+// J = JOKER
+constexpr uint8_t J = 2; // value used in configurations to indicate that the state of the cell does not matter
+
+constexpr std::array<std::array<uint8_t, 8>, 16> moore_clearing_configs = {{
   // lines 
-  {0,0,1,0,0,0,1,0},
-  {1,0,0,0,1,0,0,0},
+  {J,J,1,0,0,0,1,J},
+  {0,0,1,J,J,J,1,0},
+  {1,J,J,J,1,0,0,0},
+  {1,0,0,0,1,J,J,J},
   // corners
-  {0,0,0,0,1,0,1,0},
-  {0,0,1,0,1,0,0,0},
-  {1,0,1,0,0,0,0,0},
-  {1,0,0,0,0,0,1,0},
+  {0,0,0,0,1,J,1,0},
+  {0,0,1,J,1,0,0,0},
+  {1,J,1,0,0,0,0,0},
+  {1,0,0,0,0,0,1,J},
   // corners but a pixel to one side (meaning this is the only one with 4 points including current)
-  {0,0,1,1,0,0,1,0},
-  {0,0,1,0,0,1,1,0},
-  {1,1,0,0,1,0,0,0},
-  {1,0,0,1,1,0,0,0},
-  {0,0,1,0,0,0,1,1},
-  {0,1,1,0,0,0,1,0},
-  {1,0,0,0,1,1,0,0},
-  {1,0,0,0,1,0,0,1}
+  {0,0,1,1,J,J,1,0},
+  {0,0,1,J,J,1,1,0},
+  {1,1,J,J,1,0,0,0},
+  {1,J,J,1,1,0,0,0},
+  {J,J,1,0,0,0,1,1},
+  {J,1,1,0,0,0,1,J},
+  {1,0,0,0,1,1,J,J},
+  {1,0,0,0,1,J,J,1}
 }};
 
 class ClearingRule: public Rule {

@@ -36,8 +36,8 @@ uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const
       if (match) return current_state;
     }
     return 0; // does not match any configuration, kill the cell
-  } else {
-    // TODO: add implementation for VN
+  } else if (ctx.getNeighborhood() == Neighborhood::VonNeumann) { 
+
   }
   return current_state;
 }

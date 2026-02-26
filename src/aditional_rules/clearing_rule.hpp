@@ -31,6 +31,15 @@ constexpr std::array<std::array<uint8_t, 8>, 16> moore_clearing_configs = {{
   {1,0,0,0,1,J,J,1}
 }};
 
+
+constexpr std::array<std::array<uint8_t, 8>, 4> moore_only_corners_clearing_configs = {{
+  {0,0,0,0,1,J,1,0},
+  {0,0,1,J,1,0,0,0},
+  {1,J,1,0,0,0,0,0},
+  {1,0,0,0,0,0,1,J}
+}};
+
+
 class ClearingRule: public Rule {
 public:
   static ClearingRule& getInstance() {

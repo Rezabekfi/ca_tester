@@ -17,3 +17,15 @@ Lukáš Hruda
 Leden idálně mít hotovou teorii + state of the art (všechno až k popisu mojí metody)
 nejpozději do 20.1. 2026
 report ideálně začátkem ledna třeba do 10.1.
+
+
+poznámky z 27.2.
+opravit zlomení hran pomocí starých metod
++ zkusit dodání teček do nepovedených abychom viděli kde je zlom který to opraví
+TODO: dotáhnout hlavní metodu
+
+pomůcka u mřížky můžu dát jeden bod pomocný
+pokusit se udělat pomocí šíření
+
+pokusit se u hlavní metody udělat přísnější a laxnější (možnost sjednocení výsledků)
+zatím se spokojit s poloautomatickým fungováním (počet iterací hranové detekce)

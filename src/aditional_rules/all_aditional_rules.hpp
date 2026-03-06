@@ -8,3 +8,6 @@
 #include "aditional_rules/wolfram_rules.hpp"
 #include "aditional_rules/clearing_rule.hpp"
 #include "aditional_rules/line_completor.hpp"
+#include "aditional_rules/anti_convex_hull.hpp"
+#include "aditional_rules/renew_origin.hpp"
+#include "aditional_rules/edge_detection.hpp"

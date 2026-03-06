@@ -35,7 +35,7 @@ uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const
       }
       if (match) return current_state;
     }
-    return 0; // does not match any configuration, kill the cell
+    return current_state & 0xFC; 
   } else if (ctx.getNeighborhood() == Neighborhood::VonNeumann) { 
 
   }

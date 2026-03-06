@@ -10,6 +10,10 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
   auto deltas = pick_deltas(ctx.getNeighborhood());
   auto grid_values = ctx.getGrid().getGridValues();
 
+  if (current_state == OUTSIDE_CELL_VALUE) {
+    return current_state; // if the cell is already outside, it stays outside
+  }
+
   if (ctx.getNeighborhood() == Neighborhood::Moore) {
     deltas = pick_deltas(Neighborhood::Moore);
     std::array<uint8_t, 8> configuration{};
@@ -25,7 +29,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
     for (const auto& config : moore_horizontal_lines) {
       match = true;
       for (std::size_t i = 0; i < deltas.size(); ++i) {
-        if (config[i] != J && configuration[i] != config[i]) {
+        if (config[i] != J && (configuration[i] & 0x01) != (config[i] & 0x01)) { // only compare alive/dead state for vertical lines
           match = false;
           break;
         }
@@ -37,7 +41,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
     for (const auto& config : moore_vertical_lines) {
       match = true;
       for (std::size_t i = 0; i < deltas.size(); ++i) {
-        if (config[i] != J && configuration[i] != config[i]) {
+        if (config[i] != J && (configuration[i] & 0x01) != (config[i] & 0x01)) { // only compare alive/dead state for vertical lines
           match = false;
           break;
         }

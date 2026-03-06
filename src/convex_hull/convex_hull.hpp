@@ -13,6 +13,7 @@ struct CellBits {
   // bit 4 and above aren't used in the referenced algorithm but we will use bit 4 and 5 for marking cells added by rule vertex_center
   static constexpr uint8_t CENTER_CELL_MASK = 0x10;
   static constexpr uint8_t UNUSED_CENTER_CELL_MASK = 0x20;
+  static constexpr uint8_t ORIGIN_MASK = 0x40; // bit to mark original seed cells, used for debugging and visualization purposes, not used in the algorithm itself
 };
 
 inline constexpr bool is_seed(uint8_t s)              { return (s & CellBits::SEED_MASK) != 0; }
@@ -26,6 +27,9 @@ inline constexpr uint8_t with_seed(uint8_t s, bool v) {
 }
 inline constexpr uint8_t mark_cell(uint8_t s)         { return s |  CellBits::MARK_MASK; }
 inline constexpr uint8_t unmark_cell(uint8_t s)       { return s & ~CellBits::MARK_MASK; }
+
+inline constexpr uint8_t mark_origin(uint8_t s)       { return s |  CellBits::ORIGIN_MASK; }
+inline constexpr uint8_t is_origin(uint8_t s)         { return (s & CellBits::ORIGIN_MASK) != 0; }
 
 inline constexpr uint8_t mark_center_cell(uint8_t s)    { return s |  CellBits::CENTER_CELL_MASK; }
 inline constexpr uint8_t unmark_center_cell(uint8_t s)  { return s & ~CellBits::CENTER_CELL_MASK; }

@@ -184,7 +184,7 @@ void Engine::resetDistances() {
   std::lock_guard<std::mutex> lock(mtx_);
   std::vector<uint8_t> reset_grid = grid_.getGridValues();
   for (auto& cell : reset_grid) {
-    cell = static_cast<uint8_t>(cell & 0b00000011); // reset all but the two least significant bits
+    cell = static_cast<uint8_t>(cell & 0b11110011);
   }
   grid_.setGridValues(reset_grid);
   setCalculatingDistances(false);

@@ -2,12 +2,12 @@
 
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
+#include "clearing_rule.hpp"
 #include <array>
 
 constexpr std::string EDGE_DETECTION_RULE_NAME = "Edge Detection Rule";
 
 // J = JOKER
-constexpr uint8_t J = 2; // value used in configurations to indicate that the state of the cell does not matter
 
 // bit setup:
 // last bit is alive or dead, second last bit is whether the cell is horizontal edge, third last bit is whether the cell is vertical edge
@@ -22,27 +22,28 @@ constexpr std::array<std::array<uint8_t, 8>, 2> moore_vertical_lines = {{
   {1,J,J,J,1,0,0,0},
 }};
 
-// helper functions
+constexpr uint8_t HORIZONTAL_EDGE_MASK = 0x02; // second last bit
+constexpr uint8_t VERTICAL_EDGE_MASK = 0x04; // third last bit
 
 // change the magic numbers later
 inline uint8_t add_horizontal_edge_bit(uint8_t state) {
-  return state | 0x02; 
+  return state | HORIZONTAL_EDGE_MASK; 
 }
 
 inline uint8_t add_vertical_edge_bit(uint8_t state) {
-  return state | 0x04;
+  return state | VERTICAL_EDGE_MASK;
 }
 
 inline bool is_horizontal_edge(uint8_t state) {
-  return (state & 0x02) != 0;
+  return (state & HORIZONTAL_EDGE_MASK) != 0;
 }
 
 inline bool is_vertical_edge(uint8_t state) {
-  return (state & 0x04) != 0;
+  return (state & VERTICAL_EDGE_MASK) != 0;
 }
 
 inline bool is_alive(uint8_t state) {
-  return (state & 0x01) != 0;
+  return (state & 0x01) != 0; // last bit is alive or dead
 }
 
 inline bool is_corner(uint8_t state) {

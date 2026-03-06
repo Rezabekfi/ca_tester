@@ -213,6 +213,12 @@ void Renderer::renderRuleSettings() {
         if (rule_entry.key == CONVEX_HULL_RULE_NAME) {
           engine_.setCalculatingDistances(true);
           engine_.setDistanceCalculator(ConvexHull::calculateDistances);
+          // for all seeds in the grid update to original seeds
+          for (auto& cell : engine_.getGrid().getGridValues()) {
+            if (is_seed(cell)) {
+              cell = mark_origin(cell); 
+            }
+          }
         } else {
           engine_.setCalculatingDistances(false);
           engine_.resetDistances();
@@ -322,6 +328,11 @@ void Renderer::renderGrid() {
           ImVec2 a(p0.x + c * cellSize + 1, p0.y + r * cellSize + 1);
           ImVec2 b(p0.x + (c + 1) * cellSize - 1, p0.y + (r + 1) * cellSize - 1);
           dl->AddRectFilled(a, b, fillColor);
+          if (cells[r * cols + c] & 0x40) { // show original seeds
+            ImVec2 sa(p0.x + c * cellSize + cellSize * 0.25f, p0.y + r * cellSize + cellSize * 0.25f);
+            ImVec2 sb(p0.x + c * cellSize + cellSize * 0.75f, p0.y + r * cellSize + cellSize * 0.75f);
+            dl->AddRectFilled(sa, sb, IM_COL32(255, 100, 100, 255));
+          }
         }
         if (r == 15 && c == 25 && !light_mode_) {
           // highlight middle cell for testing

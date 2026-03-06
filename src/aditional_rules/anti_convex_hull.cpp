@@ -6,6 +6,7 @@ uint8_t AntiConvexHull::apply(uint8_t current_state, const RuleContext& ctx, con
 }
 
 uint8_t AntiConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
+  if (is_origin(current_state)) return mark_origin(INSIDE_CELL_VALUE); 
   return (is_seed(current_state) || is_marked(current_state)) ? INSIDE_CELL_VALUE : OUTSIDE_CELL_VALUE;
 }
 

@@ -58,6 +58,9 @@ add_library(ca_core
   src/aditional_rules/wolfram_rules.cpp
   src/aditional_rules/line_completor.cpp
   src/aditional_rules/clearing_rule.cpp
+  src/aditional_rules/edge_detection.cpp
+  src/aditional_rules/renew_origin.cpp
+  src/aditional_rules/anti_convex_hull.cpp
 )
 target_include_directories(ca_core PUBLIC src)
 

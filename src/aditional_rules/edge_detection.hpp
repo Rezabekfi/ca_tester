@@ -22,7 +22,7 @@ constexpr std::array<std::array<uint8_t, 8>, 2> moore_vertical_lines = {{
   {1,J,J,J,1,0,0,0},
 }};
 
-constexpr uint8_t HORIZONTAL_EDGE_MASK = 0x02; // second last bit
+constexpr uint8_t HORIZONTAL_EDGE_MASK = 0x08; 
 constexpr uint8_t VERTICAL_EDGE_MASK = 0x04; // third last bit
 
 // change the magic numbers later

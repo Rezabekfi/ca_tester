@@ -30,7 +30,7 @@ uint8_t LineCompletorRule::apply(uint8_t current_state, const RuleContext& ctx, 
     (in_bounds(static_cast<int>(ctx.x), static_cast<int>(ctx.y) - static_cast<int>(i)) && grid_values[(ctx.y - i) * ctx.getGrid().getWidth() + ctx.x] > 0) ? ++active_count_column : ++dead_count_column;
   }
 
-  return (active_count_line > line_radius_ || active_count_column > line_radius_) ? 1 : current_state;
+  return (active_count_line > line_radius_ || active_count_column > line_radius_) ? (current_state | 0x01) : current_state; 
 }
 
 std::string LineCompletorRule::getName() const {

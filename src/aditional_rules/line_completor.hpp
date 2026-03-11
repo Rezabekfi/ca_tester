@@ -24,5 +24,5 @@ public:
 
   inline static AutoRegisterRule<LineCompletorRule> auto_register_line_completor{LINE_COMPLETOR_RULE_NAME, "Rule that completes lines of a certain length."};
 private:
-  mutable std::size_t line_radius_ = 4; // todo: delete this later
+  mutable std::size_t line_radius_ = 5; // todo: delete this later
 };

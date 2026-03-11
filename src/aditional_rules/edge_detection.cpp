@@ -35,7 +35,8 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
         }
       }
       if (match) {
-        return add_horizontal_edge_bit(current_state);
+        current_state = add_horizontal_edge_bit(current_state);
+        break;
       }
     }
     for (const auto& config : moore_vertical_lines) {
@@ -47,7 +48,8 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
         }
       } 
       if (match) {
-        return add_vertical_edge_bit(current_state);
+        current_state = add_vertical_edge_bit(current_state);
+        break;
       }
     }
     // spread the edge bits
@@ -59,7 +61,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
       current_state = add_horizontal_edge_bit(current_state);
     }
 
-    if (is_vertical_edge(current_state) || is_horizontal_edge(current_state) && is_inside(current_state)) {
+    if ((is_vertical_edge(current_state) || is_horizontal_edge(current_state)) && is_inside(current_state)) {
       return current_state | 0x01; // set alive bit if it is an edge and was inside before
     }
 

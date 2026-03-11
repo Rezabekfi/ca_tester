@@ -28,7 +28,7 @@ uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const
     for (const auto& config : moore_clearing_configs) {
       bool match = true;
       for (std::size_t i = 0; i < deltas.size(); ++i) {
-        if (config[i] != J && configuration[i] != config[i]) {
+        if (config[i] != J && (configuration[i] & 0x03) != (config[i] & 0x03)) { // only compare alive/dead state
           match = false;
           break;
         }

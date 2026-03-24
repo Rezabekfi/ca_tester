@@ -88,7 +88,7 @@ public:
   Boundary getBoundary() const;
   Neighborhood getNeighborhood() const;
 
-  static std::vector<uint8_t> getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary);
+  static void getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary, std::vector<uint8_t>& out);
 
   ~Grid() = default;
   

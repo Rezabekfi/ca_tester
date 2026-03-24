@@ -29,3 +29,6 @@ pokusit se udělat pomocí šíření
 
 pokusit se u hlavní metody udělat přísnější a laxnější (možnost sjednocení výsledků)
 zatím se spokojit s poloautomatickým fungováním (počet iterací hranové detekce)
+
+poznámky z 13.3.
+vyfotit si data na které metody použijeme (okno s dlaždičkami a barák s okny)

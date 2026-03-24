@@ -1,27 +1,66 @@
 #include "grid.hpp"
 #include "rule_context.hpp"
+#include <thread>
+#include <vector>
+#include <algorithm>
 
 Grid::Grid(std::size_t width, std::size_t height, uint8_t default_state, Boundary boundary, Neighborhood neighborhood)
   : width_(width), height_(height), boundary_(boundary), neighborhood_(neighborhood) {
   cells_.resize(width * height, default_state);
 }
 
-
 void Grid::step(const Rule& rule) {
-  new_cells_ = cells_;
-  RuleContext ctx{*this, 0, 0, neighborhood_, boundary_};
-
-  for (std::size_t y = 0; y < height_; ++y) {
-    for (std::size_t x = 0; x < width_; ++x) {
-      ctx.x = x;
-      ctx.y = y;
-      std::vector<uint8_t> neighbours =
-          getNeighborsStatic(cells_, x, y, width_, height_, neighborhood_, boundary_);
-      uint8_t current_state = cells_[idx(x, y, width_)];
-      new_cells_[idx(x, y, width_)] = rule.apply(current_state, ctx, neighbours);
-    }
+  if (new_cells_.size() != cells_.size()) {
+    new_cells_.resize(cells_.size());
   }
-  cells_ = new_cells_;
+
+  std::size_t thread_count = std::thread::hardware_concurrency();
+  if (thread_count == 0) {
+    thread_count = 1;
+  }
+
+  thread_count = std::min(thread_count, height_);
+  const std::size_t rows_per_thread = (height_ + thread_count - 1) / thread_count;
+
+  std::vector<std::thread> threads;
+  threads.reserve(thread_count);
+
+  for (std::size_t t = 0; t < thread_count; ++t) {
+    const std::size_t y_begin = t * rows_per_thread;
+    const std::size_t y_end = std::min(y_begin + rows_per_thread, height_);
+
+    if (y_begin >= y_end) {
+        break;
+    }
+
+    threads.emplace_back([&, y_begin, y_end]() {
+      // Each thread gets its own context
+      RuleContext ctx{*this, 0, 0, neighborhood_, boundary_};
+      std::vector<uint8_t> neighbors; // Reusable vector for neighbors
+      neighbors.reserve(8); // TODO: change later this is not always 8 but for now good enough
+
+      for (std::size_t y = y_begin; y < y_end; ++y) {
+        const std::size_t row = y * width_;
+
+        for (std::size_t x = 0; x < width_; ++x) {
+          ctx.x = x;
+          ctx.y = y;
+
+          getNeighborsStatic(cells_, x, y, width_, height_, neighborhood_, boundary_, neighbors);
+
+          const std::size_t i = row + x;
+          const uint8_t current_state = cells_[i];
+          new_cells_[i] = rule.apply(current_state, ctx, neighbors);
+        }
+      }
+    });
+  }
+  for (auto& th : threads) {
+      th.join();
+  }
+
+  // 2) swap instead of copying back
+  cells_.swap(new_cells_);
 }
 
 void Grid::setCell(std::size_t x, std::size_t y, uint8_t state) {
@@ -69,8 +108,8 @@ void Grid::setNeighborhood(Neighborhood neighborhood) {
   neighborhood_ = neighborhood;
 }
 
-std::vector<uint8_t> Grid::getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
-  std::vector<uint8_t> neighbors;
+void Grid::getNeighborsStatic(const std::vector<uint8_t>& cells, std::size_t x, std::size_t y, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary, std::vector<uint8_t>& neighbors) {
+  neighbors.clear();
   auto deltas = pick_deltas(neighborhood);
   for (const auto& delta : deltas) {
     int nx = static_cast<int>(x) + delta.first;
@@ -104,7 +143,6 @@ std::vector<uint8_t> Grid::getNeighborsStatic(const std::vector<uint8_t>& cells,
     }
     neighbors.push_back(cells[idx(static_cast<std::size_t>(nx), static_cast<std::size_t>(ny), width)]);
   }
-  return neighbors;
 }
 
 Boundary Grid::getBoundary() const {

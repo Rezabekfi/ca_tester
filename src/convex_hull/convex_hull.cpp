@@ -78,12 +78,15 @@ uint8_t ConvexHull::apply(uint8_t current_state, std::vector<uint8_t> neighbours
 
 void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t width, std::size_t height, Neighborhood neighborhood, Boundary boundary) {
   std::vector<uint8_t> old_grid = grid; // make a copy of the original grid
+  std::vector<uint8_t> neighbors; // reusable vector for neighbors
+  neighbors.reserve(8); // TODO: change later this is not always 8 but for
   for (std::size_t y = 0; y < height; ++y) {
     for (std::size_t x = 0; x < width; ++x) {
       if (is_seed(old_grid[y * width + x])) {
         continue; // skip seeds 
       }
-      std::vector<uint8_t> neighbors = Grid::getNeighborsStatic(old_grid, x, y, width, height, neighborhood, boundary);
+      neighbors.clear();
+      Grid::getNeighborsStatic(old_grid, x, y, width, height, neighborhood, boundary, neighbors);
       bool all_same = true;
       uint8_t distance = get_distance(grid[y * width + x]); 
       for (uint8_t neighbor : neighbors) {

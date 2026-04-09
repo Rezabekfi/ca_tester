@@ -32,3 +32,6 @@ zatím se spokojit s poloautomatickým fungováním (počet iterací hranové de
 
 poznámky z 13.3.
 vyfotit si data na které metody použijeme (okno s dlaždičkami a barák s okny)
+
+poznámky z 27.3.
+opravit bug v grid metodě

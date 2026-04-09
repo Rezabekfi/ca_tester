@@ -27,6 +27,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
     }
     bool match;
     for (const auto& config : moore_horizontal_lines) {
+      if (is_dead(current_state)) break;
       match = true;
       for (std::size_t i = 0; i < deltas.size(); ++i) {
         if (config[i] != J && (configuration[i] & 0x01) != (config[i] & 0x01)) { // only compare alive/dead state for vertical lines
@@ -40,6 +41,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
       }
     }
     for (const auto& config : moore_vertical_lines) {
+      if (is_dead(current_state)) break;
       match = true;
       for (std::size_t i = 0; i < deltas.size(); ++i) {
         if (config[i] != J && (configuration[i] & 0x01) != (config[i] & 0x01)) { // only compare alive/dead state for vertical lines

@@ -28,6 +28,8 @@ private:
   std::size_t grid_cols_;
   Neighborhood neighborhood_;
   Boundary boundary_;
+  std::size_t hovered_cell_x_;
+  std::size_t hovered_cell_y_;
 
   // left as pointers because of SDL
   SDL_Window* window_ = nullptr;

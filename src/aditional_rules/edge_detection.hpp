@@ -46,6 +46,10 @@ inline bool is_alive(uint8_t state) {
   return (state & 0x01) != 0; // last bit is alive or dead
 }
 
+inline bool is_dead(uint8_t state) {
+  return !is_alive(state);
+}
+
 inline bool is_corner(uint8_t state) {
   return is_horizontal_edge(state) && is_vertical_edge(state);
 }

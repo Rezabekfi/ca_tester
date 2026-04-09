@@ -271,6 +271,9 @@ void Renderer::renderGridSettings() {
     ImGui::Button("Apply Size");
     ImGui::EndDisabled();
   }
+  // show current position of the cell highighted by mouse
+  ImGui::Text("Mouse over cell: (%d, %d)", hovered_cell_x_, hovered_cell_y_);
+
 }
 
 
@@ -350,6 +353,9 @@ void Renderer::renderGrid() {
       ImVec2 mp = ImGui::GetIO().MousePos;
       int col = (int)((mp.x - p0.x) / cellSize);
       int row = (int)((mp.y - p0.y) / cellSize);
+      // Store hovered cell for display in controls 
+      hovered_cell_x_ = col;
+      hovered_cell_y_ = row;
       if (col >= 0 && col < (int)cols && row >= 0 && row < (int)rows) {
         int idx = row * cols + col;
         // On mouse press: toggle

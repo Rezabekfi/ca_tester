@@ -45,11 +45,11 @@ bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size
 
 uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   // TODO: remove the magic number 20 later and make it configurable or change the logic to check if there was no change in last iterations
-  if (is_seed(current_state) || (is_marked(current_state) && !(ctx.getIteration() % 20 == 0)))  {
+  if (is_seed(current_state) || (is_marked(current_state) && !(ctx.getIteration() % ctx.getGrid().getWidth() == 0)))  {
     return current_state; // seeds remain unchanged
   }
 
-  if (ctx.getIteration() % 20 == 0 && ctx.getIteration() != 0) {
+  if (ctx.getIteration() % ctx.getGrid().getWidth() == 0 && ctx.getIteration() != 0) {
     if (is_marked(current_state)) {
       return create_cell(true, false, 0); // making seeds from marked cells every 20 iterations this will be changed to check if there was no change in last iterations later
     }

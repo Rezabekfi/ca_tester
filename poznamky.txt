@@ -35,3 +35,19 @@ vyfotit si data na které metody použijeme (okno s dlaždičkami a barák s okn
 
 poznámky z 27.3.
 opravit bug v grid metodě
+
+Otázky k 16.4.
+- Jak dělat testování metod do textu? (stačí klasicky pár příkladů good, pár bad, nebo to chce dělat systematicky a pro každou metodu stejné vstupy?)
+Tak jak to bylo v reportu good 
+- Jak udělat hodnocení metod? (můj návrh v textu je sice funkční, ale je trochu příliš složitý na to, že bych nejraději udělal prostě pouze slovní zhodnocení pro každou metodu "by oko")
+Asi lze slovně to je fajn, ale pokud to bude nutné na nějaké niance tak bude potřeba metrika
+- Jaké data z testů na reálných datech použít? (nejlépší mi přišli: deskovky, jedno okno, 4 okna, skříně zásilkovny)
+
+- Napadlo mě se pokusit o aplikaci metody a pak to použít jako překryv reálného obrázku (příklad do práce: fotka -> ouput metody -> překryv na fotku (například červeně) -> zhodnocení, jestli se to překrylo dobře nebo ne)
+
+TODO: 
+sepsat to co máme abych mohl jít na symetrizaci
+zkusit aplikovat pravidla od Gregora
+  zkusit na ty více v pohodě a pak to zkusit na ty méně v pohodě
+  kdyby se to nestihlo tak nevadí tolik
+teďka se zaměřit na experimenty a výsledky ať to je hotové co nejdříve

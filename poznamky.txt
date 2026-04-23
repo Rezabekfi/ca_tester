@@ -51,3 +51,23 @@ zkusit aplikovat pravidla od Gregora
   zkusit na ty více v pohodě a pak to zkusit na ty méně v pohodě
   kdyby se to nestihlo tak nevadí tolik
 teďka se zaměřit na experimenty a výsledky ať to je hotové co nejdříve
+
+Otázky k 23.4.
+- Stačí symetrizace takhle jak mám na mých metodách? Nějaké závěry z toho lze vyvodit? (můj návrh je, že bych to zahrál na to, že buněčný automat lze použít pro symetrizaci pokud víme charakter vstupních dat)
+- Jak postupovat dále v symetrizaci, pokud nestačí to předtím.
+- Mám dělat diskuzi? Nevím jestli jsem automaticky neudělal diskuzi v textu (u kapitoly s experimenty a výsledky)
+  - a pokud ano, jak rozlišit co jde do diskuze, co jde do textu k experimentům a výsledkům, a co jde do závěru?
+
+TODO:
+- vyzkoušet symetrizaci na datech (obrázek je na textu 3 kapitoly vytisknuty)
+- za 4 kapitolu přidat info k symetrizaci takež 5 kapitola bude symetrizace
+- přidat k experimentům symetrizaci nakonec
+- smazat konec 4 kapitoly DONE
+- upravit nadpisy v 6 kapitole asi přidat na konce kapitoly 6 ty výsledky
+- zkusit do pondělí mít všechno v podstatě
+- vyzkoušet na jiném pc
+- komentáře do kódu soon
+- udělat do úterý úvod i závěr
+
+
+

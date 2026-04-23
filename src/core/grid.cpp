@@ -172,5 +172,3 @@ void Grid::setWidth(std::size_t width) {
   width_ = width;
 }
 
-
-

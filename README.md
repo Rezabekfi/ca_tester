@@ -10,6 +10,7 @@ The `aditional_rules` package contains some aditional rules core contains only C
 
 `app_sdl` is the package that contains the code for the app itself. It uses SDL2 library to create a window and render the cellular automata. You can use this package as a reference for how to use the core package to create your own app if you want.
 
+⚠️ **WARNING:** Important note about the `app_sdl` package.
 The class `renderer` ended up with even some logic for the app itself which is design problem so be wary in using this. This is hopefully going to be fixed very soon (most likely after the bachelor thesis is done). I am very sorry for this but I had to do some quick fixes to get the app working so I could test the rules.
 
 ## Adding new rules

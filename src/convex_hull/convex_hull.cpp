@@ -44,7 +44,6 @@ bool ConvexHull::distinct_sets(const RuleContext& ctx, std::size_t nx, std::size
 }
 
 uint8_t ConvexHull::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
-  // TODO: remove the magic number 20 later and make it configurable or change the logic to check if there was no change in last iterations
   if (is_seed(current_state) || (is_marked(current_state) && !(ctx.getIteration() % ctx.getGrid().getWidth() == 0)))  {
     return current_state; // seeds remain unchanged
   }
@@ -103,6 +102,9 @@ void ConvexHull::calculateDistances(std::vector<uint8_t>& grid, std::size_t widt
 }
 
 uint8_t ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+  if (ctx.x == 0 || ctx.y == 0 || ctx.x == ctx.getGrid().getWidth() - 1 || ctx.y == ctx.getGrid().getHeight() - 1) {
+    return current_state;
+  }
   uint8_t dist_x = get_distance(current_state);
   bool all_same = true;
   bool potential_unused_center = false;
@@ -129,6 +131,11 @@ uint8_t ConvexHull::vertex_center(uint8_t current_state, const RuleContext& ctx,
 }
 
 uint8_t ConvexHull::edge_center(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+  // insane edge case handling for now sorry 
+  if (ctx.x == 0 || ctx.y == 0 || ctx.x == ctx.getGrid().getWidth() - 1 || ctx.y == ctx.getGrid().getHeight() - 1 || ctx.x == 1 || ctx.y == 1 || ctx.x == ctx.getGrid().getWidth() - 2 || ctx.y == ctx.getGrid().getHeight() - 2) {
+    return current_state;
+  }
+
   uint8_t dist_x = get_distance(current_state);
   auto deltas = pick_deltas(ctx.neighborhood);
   bool potential_unused_center = false;

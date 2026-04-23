@@ -81,7 +81,6 @@ public:
   void setHeight(std::size_t height);
   void setIteration(std::size_t iteration);
 
-
   std::size_t getWidth() const;
   std::size_t getHeight() const;
   std::size_t getIteration() const;

@@ -19,16 +19,18 @@ constexpr std::string DEFAULT_SAVE_FOLDER = "saves/";
 constexpr bool USE_DEFAULT_SAVE_FOLDER = true;
 
 class IO {
-public: 
+public:
+  // Singleton access
   static IO& instance() {
     static IO instance;
     return instance;
   }
 
+  // Save current grid state + settings to a JSON file. Returns true on success, false on failure.
   bool saveGridToFile(const Engine& engine, const std::string& filename, bool use_default_folder = USE_DEFAULT_SAVE_FOLDER);
+  // Load grid state + settings from a JSON file. Returns true on success, false on failure.
   bool loadGridFromFile(Engine& engine, const std::string& filename);
 
 private:
   IO() = default;
-
 };

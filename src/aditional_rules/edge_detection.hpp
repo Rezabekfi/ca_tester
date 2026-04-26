@@ -7,10 +7,11 @@
 
 constexpr std::string EDGE_DETECTION_RULE_NAME = "Edge Detection Rule";
 
-// J = JOKER
+// Pattern joker reused from clearing rule
+// J means "don't care" in neighborhood configs
 
-// bit setup:
-// last bit is alive or dead, second last bit is whether the cell is horizontal edge, third last bit is whether the cell is vertical edge
+// Cell bit layout:
+// b0 = alive/dead, b2 = vertical edge, b3 = horizontal edge
 
 constexpr std::array<std::array<uint8_t, 8>, 2> moore_horizontal_lines = {{
   {J,J,1,0,0,0,1,J},
@@ -23,13 +24,14 @@ constexpr std::array<std::array<uint8_t, 8>, 2> moore_vertical_lines = {{
 }};
 
 constexpr uint8_t HORIZONTAL_EDGE_MASK = 0x08; 
-constexpr uint8_t VERTICAL_EDGE_MASK = 0x04; // third last bit
+constexpr uint8_t VERTICAL_EDGE_MASK = 0x04;
 
-// change the magic numbers later
+// Tags cell as part of a horizontal edge
 inline uint8_t add_horizontal_edge_bit(uint8_t state) {
   return state | HORIZONTAL_EDGE_MASK; 
 }
 
+// Tags cell as part of a vertical edge
 inline uint8_t add_vertical_edge_bit(uint8_t state) {
   return state | VERTICAL_EDGE_MASK;
 }
@@ -42,36 +44,47 @@ inline bool is_vertical_edge(uint8_t state) {
   return (state & VERTICAL_EDGE_MASK) != 0;
 }
 
+// Alive state still lives in the lowest bit
 inline bool is_alive(uint8_t state) {
-  return (state & 0x01) != 0; // last bit is alive or dead
+  return (state & 0x01) != 0;
 }
 
 inline bool is_dead(uint8_t state) {
   return !is_alive(state);
 }
 
+// A corner belongs to both edge directions
 inline bool is_corner(uint8_t state) {
   return is_horizontal_edge(state) && is_vertical_edge(state);
 }
 
+// Clears only alive bit, keeps edge metadata around
 inline uint8_t make_dead(uint8_t state) {
-  return state & 0xFE; // set last bit to 0
+  return state & 0xFE;
 }
 
-
+// Detects straight edge patterns and grows them outward
 class EdgeDetectionRule: public Rule {
 public:
   static EdgeDetectionRule& getInstance() {
     static EdgeDetectionRule instance;
     return instance;
   }
+
   EdgeDetectionRule() = default;
   ~EdgeDetectionRule() override = default;
   
-
+  // not used
   uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours) const override;
+
+  // Main version uses context for direction/position-aware growth
   uint8_t apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const override;
+
   std::string getName() const override;
 
-  inline static AutoRegisterRule<EdgeDetectionRule> auto_register_edge_detection{EDGE_DETECTION_RULE_NAME, ""};
+  // Auto-registers rule for UI selection
+  inline static AutoRegisterRule<EdgeDetectionRule> auto_register_edge_detection{
+    EDGE_DETECTION_RULE_NAME,
+    ""
+  };
 };

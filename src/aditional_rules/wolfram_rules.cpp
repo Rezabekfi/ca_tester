@@ -4,6 +4,9 @@
 WolframRule::WolframRule(uint8_t rule_number)
   : rule_number_(rule_number) {}
 
+// WARNING: this rule was not tested after implementing parallelization and it might act weirdly now
+
+// This rule simulates a 1D Wolfram cellular automaton by treating each row as a new generation based on the previous row's states. The first row remains unchanged, and subsequent rows are computed based on the 3-cell neighborhood above (left, center, right) using the specified rule number.
 uint8_t WolframRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   if (ctx.y == 0) {
     return current_state; // first row remains unchanged
@@ -20,6 +23,7 @@ uint8_t WolframRule::apply(uint8_t current_state, const RuleContext& ctx, const 
   return getNextState(neighbourhood_values, rule_number_);
 }
 
+// This function maps the 3-bit neighborhood configuration to the next state based on the rule number's bits
 uint8_t WolframRule::getNextState(uint8_t neighbourhood_values, uint8_t rule_number) {
   switch (neighbourhood_values) {
     case 0b111: return (rule_number & 0b10000000) ? 1 : 0;
@@ -34,6 +38,7 @@ uint8_t WolframRule::getNextState(uint8_t neighbourhood_values, uint8_t rule_num
   }
 }
 
+// not used
 uint8_t WolframRule::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
   return current_state;
 }

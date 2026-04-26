@@ -5,9 +5,11 @@
 
 constexpr std::string EROSION_RULE_NAME = "Erosion";
 
+// Morphological erosion: shrinks active cells inward
 class ErosionRule : public Rule {
 public:
 
+  // Singleton helper for shared instance access
   static ErosionRule& getInstance() {
     static ErosionRule instance;
     return instance;

@@ -15,9 +15,9 @@ add_library(ca_core
   src/convex_hull/convex_hull.cpp
   src/aditional_rules/erosion.cpp
   src/aditional_rules/dilation.cpp
-  src/aditional_rules/fixing_rectangle.cpp
+  #src/aditional_rules/fixing_rectangle.cpp
   src/aditional_rules/rotation_rule.cpp
-  src/aditional_rules/fix_rotate_fix_rule.cpp
+  #src/aditional_rules/fix_rotate_fix_rule.cpp
   src/aditional_rules/wolfram_rules.cpp
   src/aditional_rules/line_completor.cpp
   src/aditional_rules/clearing_rule.cpp

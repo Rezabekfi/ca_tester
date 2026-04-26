@@ -21,7 +21,7 @@ To add new rules to the app you need to create a new class that implements the `
 inline static AutoRegisterRule<YourClass> auto_register{"YourClassName", "Description describing your class"};
 ```
 
-ofcource in the new rule you also need to implement the `apply` method which you can see in the `Rule` interface. For your convenience there is also a `TemplateRule` class in the `aditional_rules` package and you can basically just copy paste it and just change the name and the logic in the `apply` method.
+ofcource in the new rule you also need to implement the `apply` method which you can see in the `Rule` interface. For your convenience there is also a `ExampleRule` class in the `aditional_rules` package and you can basically just copy paste it and just change the name and the logic in the `apply` method.
 
 ## Building the app
 To build the app you need to have CMake installed and SDL2 library. Then you can just run the following commands in the terminal:

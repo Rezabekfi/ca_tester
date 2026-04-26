@@ -2,6 +2,10 @@
 #include <iostream>
 #include "core/grid.hpp"
 
+// WARNING: this might no longer work correctly as apply step is now done in parallel across multiple threads
+// USE WITH CAUTION
+
+// This rule alternates between dilation and erosion phases to try to fill holes and then trim excess in rectangles
 uint8_t FixingRectangleRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   uint8_t result_state = current_state;
   if (dilation_phase_) {

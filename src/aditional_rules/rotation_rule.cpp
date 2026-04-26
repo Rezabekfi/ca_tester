@@ -2,6 +2,8 @@
 #include "core/grid.hpp"
 #include <cmath>
 
+// This rule rotates cell states based on their neighbors by looking at a point rotated by a certain degree around a fixed point and copying its state here
+// A bit of a cheat since it relies on whole grid access instead of just neighbors but it is still interesting to see how it performs and imitates the rotation effect from the PHD thesis as mentioned in hpp file
 uint8_t RotationRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   // find if point at negative rotation_degree exists and is active if it is copy it here
   auto& gridVals = ctx.getGrid().getGridValues();

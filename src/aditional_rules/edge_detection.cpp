@@ -2,10 +2,13 @@
 #include "core/grid.hpp"
 #include "anti_convex_hull.hpp"
 
+// not used, this rule needs context for the neighborhood checks
 uint8_t EdgeDetectionRule::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
   return current_state;
 }
 
+// Rule that detects edges and then it grows them in that direction
+// WARNING: this rule is modified to work only within the inside space marked by rule "anti_convex_hull" so using it without it will not do anything
 uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   auto deltas = pick_deltas(ctx.getNeighborhood());
   auto grid_values = ctx.getGrid().getGridValues();
@@ -14,6 +17,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
     return current_state; // if the cell is already outside, it stays outside
   }
 
+  // load current neighborhood in configuration
   if (ctx.getNeighborhood() == Neighborhood::Moore) {
     deltas = pick_deltas(Neighborhood::Moore);
     std::array<uint8_t, 8> configuration{};
@@ -26,6 +30,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
       configuration[i] = grid_values[ny * ctx.getGrid().getWidth() + nx];
     }
     bool match;
+    // try to match against edge horizontal patterns
     for (const auto& config : moore_horizontal_lines) {
       if (is_dead(current_state)) break;
       match = true;
@@ -40,6 +45,7 @@ uint8_t EdgeDetectionRule::apply(uint8_t current_state, const RuleContext& ctx, 
         break;
       }
     }
+    // ty to match against vertical line patterns
     for (const auto& config : moore_vertical_lines) {
       if (is_dead(current_state)) break;
       match = true;

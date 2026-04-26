@@ -5,6 +5,8 @@
 #include <filesystem>
 #include "convex_hull/convex_hull.hpp"
 
+// Saves the current grid state and settings to a JSON file. Returns true on success, false on failure.
+// This is currently a bit "hardcoded" but for the app it is for now good enough. In the future this might be a place to look at
 bool IO::saveGridToFile(const Engine& engine, const std::string& filename, bool use_default_folder) {
   auto grid = engine.getGridConst();
   nlohmann::json j;
@@ -31,6 +33,8 @@ bool IO::saveGridToFile(const Engine& engine, const std::string& filename, bool 
   return true;
 }
 
+// Loads the grid state and settings from a JSON file. Returns true on success, false on failure.
+// Same issue with this as mentioned above
 bool IO::loadGridFromFile(Engine& engine, const std::string& filename) {
   nlohmann::json j;
   try {

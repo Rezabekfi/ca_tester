@@ -58,16 +58,18 @@ Otázky k 23.4.
 - Mám dělat diskuzi? Nevím jestli jsem automaticky neudělal diskuzi v textu (u kapitoly s experimenty a výsledky)
   - a pokud ano, jak rozlišit co jde do diskuze, co jde do textu k experimentům a výsledkům, a co jde do závěru?
 
-TODO:
-- vyzkoušet symetrizaci na datech (obrázek je na textu 3 kapitoly vytisknuty)
-- za 4 kapitolu přidat info k symetrizaci takež 5 kapitola bude symetrizace
-- přidat k experimentům symetrizaci nakonec
+- vyzkoušet symetrizaci na datech (obrázek je na textu 3 kapitoly vytisknuty) DONE
+- za 4 kapitolu přidat info k symetrizaci takež 5 kapitola bude symetrizace DONE
+- přidat k experimentům symetrizaci nakonec DONE
 - smazat konec 4 kapitoly DONE
-- upravit nadpisy v 6 kapitole asi přidat na konce kapitoly 6 ty výsledky
-- zkusit do pondělí mít všechno v podstatě
+- upravit nadpisy v 6 kapitole asi přidat na konce kapitoly 6 ty výsledky DONE
+- zkusit do pondělí mít všechno v podstatě DONE
+- udělat do úterý úvod i závěr DONE
+
+TODO:
 - vyzkoušet na jiném pc
 - komentáře do kódu soon
-- udělat do úterý úvod i závěr
-
+- symetrizace jako pojem není úplně vysvětlen
+- kam napsat změny konvexní obálky DONE (je to hned u pravidla konvexní obálky)
 
 

@@ -6,6 +6,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# ------------------------------------------------------------
+# SDL2 bundled from source
+# ------------------------------------------------------------
+
+set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+set(SDL_STATIC ON CACHE BOOL "" FORCE)
+set(SDL_TEST OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(third_party/SDL)
+
+# ------------------------------------------------------------
+# Core library
+# ------------------------------------------------------------
+
 add_library(ca_core
   src/core/grid.cpp
   src/core/engine.cpp
@@ -25,11 +39,12 @@ add_library(ca_core
   src/aditional_rules/renew_origin.cpp
   src/aditional_rules/anti_convex_hull.cpp
 )
+
 target_include_directories(ca_core PUBLIC src)
 
-# Prefer SDL2 config packages that provide imported targets.
-# Some platforms/packages expose SDL2::SDL2, others only variables.
-find_package(SDL2 REQUIRED)
+# ------------------------------------------------------------
+# ImGui
+# ------------------------------------------------------------
 
 add_library(imgui STATIC
   third_party/imgui/imgui.cpp
@@ -46,27 +61,23 @@ target_include_directories(imgui PUBLIC
   third_party/imgui/backends
 )
 
-if(TARGET SDL2::SDL2)
-  target_link_libraries(imgui PUBLIC SDL2::SDL2)
-elseif(TARGET SDL2::SDL2-static)
-  target_link_libraries(imgui PUBLIC SDL2::SDL2-static)
-else()
-  target_include_directories(imgui PUBLIC ${SDL2_INCLUDE_DIRS})
-  target_link_libraries(imgui PUBLIC ${SDL2_LIBRARIES})
-endif()
+target_link_libraries(imgui PUBLIC SDL2::SDL2-static)
+
+# ------------------------------------------------------------
+# App
+# ------------------------------------------------------------
 
 add_executable(ca_app
   src/app_sdl/main.cpp
   src/app_sdl/renderer.cpp
 )
 
-target_link_libraries(ca_app PRIVATE ca_core imgui)
+target_link_libraries(ca_app PRIVATE
+  ca_core
+  imgui
+  SDL2::SDL2-static
+)
 
-if(TARGET SDL2::SDL2)
-  target_link_libraries(ca_app PRIVATE SDL2::SDL2)
-elseif(TARGET SDL2::SDL2-static)
-  target_link_libraries(ca_app PRIVATE SDL2::SDL2-static)
-else()
-  target_include_directories(ca_app PRIVATE ${SDL2_INCLUDE_DIRS})
-  target_link_libraries(ca_app PRIVATE ${SDL2_LIBRARIES})
+if(TARGET SDL2::SDL2main)
+  target_link_libraries(ca_app PRIVATE SDL2::SDL2main)
 endif()

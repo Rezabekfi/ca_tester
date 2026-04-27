@@ -65,11 +65,10 @@ Otázky k 23.4.
 - upravit nadpisy v 6 kapitole asi přidat na konce kapitoly 6 ty výsledky DONE
 - zkusit do pondělí mít všechno v podstatě DONE
 - udělat do úterý úvod i závěr DONE
+- komentáře do kódu soon DONE
+- symetrizace jako pojem není úplně vysvětlen DONE
+- kam napsat změny konvexní obálky DONE (je to hned u pravidla konvexní obálky) DONE
 
 TODO:
 - vyzkoušet na jiném pc
-- komentáře do kódu soon
-- symetrizace jako pojem není úplně vysvětlen
-- kam napsat změny konvexní obálky DONE (je to hned u pravidla konvexní obálky)
-
 

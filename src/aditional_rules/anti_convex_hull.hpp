@@ -8,7 +8,7 @@ constexpr uint8_t OUTSIDE_CELL_VALUE = 0x20;
 constexpr uint8_t INSIDE_CELL_FLAG = 0x10; 
 constexpr uint8_t INSIDE_CELL_VALUE = 0x01 | INSIDE_CELL_FLAG;
 
-constexpr std::string ANTI_CONVEX_HULL_RULE_NAME = "Anti-Convex Hull Rule";
+inline constexpr const char* ANTI_CONVEX_HULL_RULE_NAME = "Anti-Convex Hull Rule";
 
 // Checks the inside layer, separate from regular alive/seed bit
 inline bool is_inside(uint8_t s) {

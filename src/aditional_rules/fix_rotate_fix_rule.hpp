@@ -4,7 +4,7 @@
 
 // WARNING: Do not use this rule! Might no longer work and is not tested after parallelization changes.
 
-constexpr std::string FIX_ROTATE_FIX_RULE_NAME = "Fix Rotate Fix";
+inline constexpr const char* FIX_ROTATE_FIX_RULE_NAME = "Fix Rotate Fix";
 
 // Combines fixing rectangle and rotation rules in phases to try to fix rectangles, then rotate them, then fix them again
 class FixRotateFix : public Rule {

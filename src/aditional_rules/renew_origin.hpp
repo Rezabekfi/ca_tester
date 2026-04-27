@@ -3,7 +3,7 @@
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
 
-constexpr std::string RENEW_ORIGIN_RULE_NAME = "Renew Origin Rule";
+inline constexpr const char* RENEW_ORIGIN_RULE_NAME = "Renew Origin Rule";
 
 // Helper rule used after convex hull steps
 // Revives cells that were marked as original seeds

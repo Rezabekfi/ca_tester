@@ -3,7 +3,7 @@
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
 
-constexpr std::string LINE_COMPLETOR_RULE_NAME = "LineCompletor";
+inline constexpr const char* LINE_COMPLETOR_RULE_NAME = "LineCompletor";
 
 // Tries to fill gaps in lines by looking at a larger neighborhood radius
 class LineCompletorRule: public Rule {

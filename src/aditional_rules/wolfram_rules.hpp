@@ -3,7 +3,7 @@
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
 
-constexpr std::string WOLFRAM_RULE_NAME = "Wolfram Rule xx";
+inline constexpr const char* WOLFRAM_RULE_NAME = "Wolfram Rule";
 
 // Wolfram Elementary Cellular Automaton Rule
 // NOTE: This is a reimagination of Wolfram 1D rules to 2D rules by acting like each row is one iteration of 1D CA so each step creates a new row

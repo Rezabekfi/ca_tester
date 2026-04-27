@@ -44,5 +44,5 @@ uint8_t WolframRule::apply(uint8_t current_state, std::vector<uint8_t> neighbour
 }
 
 std::string WolframRule::getName() const {
-    return WOLFRAM_RULE_NAME + " " + std::to_string(static_cast<int>(rule_number_));
+    return WOLFRAM_RULE_NAME;
 }

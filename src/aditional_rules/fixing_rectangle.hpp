@@ -8,7 +8,7 @@
 
 // WARNING: Do not use this rule! Might no longer work and is not tested after parallelization changes. 
 
-constexpr std::string FIXING_RECTANGLE_RULE_NAME = "Fixing Rectangle";
+inline constexpr const char* FIXING_RECTANGLE_RULE_NAME = "Fixing Rectangle";
 
 // Combines two rules (dilation + erosion) in phases
 // Idea: dilation fills gaps, erosion trims excess → together smooth shapes

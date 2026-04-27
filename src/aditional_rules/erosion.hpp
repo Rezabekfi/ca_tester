@@ -3,7 +3,7 @@
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
 
-constexpr std::string EROSION_RULE_NAME = "Erosion";
+inline constexpr const char* EROSION_RULE_NAME = "Erosion";
 
 // Morphological erosion: shrinks active cells inward
 class ErosionRule : public Rule {

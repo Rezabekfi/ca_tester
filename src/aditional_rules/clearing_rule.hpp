@@ -4,7 +4,7 @@
 #include "core/rule_registry.hpp"
 #include <array>
 
-constexpr std::string CLEARING_RULE_NAME = "Clearing Rule";
+inline constexpr const char* CLEARING_RULE_NAME = "Clearing Rule";
 
 // J = wildcard means "don't care" in pattern matching
 constexpr uint8_t J = 2;

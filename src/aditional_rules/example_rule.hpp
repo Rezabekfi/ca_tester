@@ -6,7 +6,7 @@
 
 // Change this to your desired rule name, it will appear in the UI and be used for registration
 // Change even the name of the constant if you want but make sure to update it in the getName() method of the rule class as well
-constexpr std::string EXAMPLE_RULE_NAME = "Example Rule";
+inline constexpr const char* EXAMPLE_RULE_NAME = "Example Rule";
 
 // Minimal reference implementation for writing new rules
 // Shows both APIs: simple (neighbors only) and full (with context)

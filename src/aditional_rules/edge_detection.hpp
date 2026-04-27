@@ -5,7 +5,7 @@
 #include "clearing_rule.hpp"
 #include <array>
 
-constexpr std::string EDGE_DETECTION_RULE_NAME = "Edge Detection Rule";
+inline constexpr const char* EDGE_DETECTION_RULE_NAME = "Edge Detection Rule";
 
 // Pattern joker reused from clearing rule
 // J means "don't care" in neighborhood configs

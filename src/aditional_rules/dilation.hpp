@@ -3,7 +3,7 @@
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
 
-constexpr std::string DILATION_RULE_NAME = "Dilation";
+inline constexpr const char* DILATION_RULE_NAME = "Dilation";
 
 // Morphological dilation: grows active cells outward
 class DilationRule: public Rule {

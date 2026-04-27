@@ -1,6 +1,7 @@
 #include "rotation_rule.hpp"
 #include "core/grid.hpp"
 #include <cmath>
+#include <numbers>
 
 // This rule rotates cell states based on their neighbors by looking at a point rotated by a certain degree around a fixed point and copying its state here
 // A bit of a cheat since it relies on whole grid access instead of just neighbors but it is still interesting to see how it performs and imitates the rotation effect from the PHD thesis as mentioned in hpp file
@@ -25,8 +26,8 @@ uint8_t RotationRule::apply(uint8_t current_state, const RuleContext& ctx, const
 std::pair<int, int> RotationRule::rotate_point(int x, int y, double degree) const {
   int rel_x = x - static_cast<int>(fixed_point_.first);
   int rel_y = y - static_cast<int>(fixed_point_.second);
-  int rotated_x = static_cast<int>(std::round(cos(degree * M_PI / 180.0) * rel_x - sin(degree * M_PI / 180.0) * rel_y));
-  int rotated_y = static_cast<int>(std::round(sin(degree * M_PI / 180.0) * rel_x + cos(degree * M_PI / 180.0) * rel_y));
+  int rotated_x = static_cast<int>(std::round(cos(degree * std::numbers::pi / 180.0) * rel_x - sin(degree * std::numbers::pi / 180.0) * rel_y));
+  int rotated_y = static_cast<int>(std::round(sin(degree * std::numbers::pi / 180.0) * rel_x + cos(degree * std::numbers::pi / 180.0) * rel_y));
   rotated_x += static_cast<int>(fixed_point_.first);
   rotated_y += static_cast<int>(fixed_point_.second);
   return {rotated_x, rotated_y};

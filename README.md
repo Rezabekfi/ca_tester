@@ -24,14 +24,23 @@ inline static AutoRegisterRule<YourClass> auto_register{"YourClassName", "Descri
 ofcource in the new rule you also need to implement the `apply` method which you can see in the `Rule` interface. For your convenience there is also a `ExampleRule` class in the `aditional_rules` package and you can basically just copy paste it and just change the name and the logic in the `apply` method.
 
 ## Building the app
-To build the app you need to have CMake installed and SDL2 library. Then you can just run the following commands in the terminal:
+To insall and run the app you need to have CMake and a C++ compiler installed on your system. (For windows I tested it using MSYS2 and MinGW-w64 and it worked fine). 
 
+First you need to clone the repository or download the source code and navigate to the project folder:
+```bash
+git clone https://github.com/Rezabekfi/ca_tester.git 
+git submodule update --init --recursive
+cd ca_tester
+```
+Submodule is used for the SDL2 library which is required for the app to run. If you don't have git or you don't want to use it, you can also download the SDL2 library manually and place it in the `third_party` folder. Or just ask me for the compiled version of the app. If you're my opponent for the bachelor thesis, you already have the zip file with the source code and the compiled version of the app so you don't need to do this.
+
+Then you can build the app using CMake:
 ```bash
 cmake -S . -B build
 cmake --build build
 ```
 
-This will create a `build` folder and inside it you will find the executable file `ca_tester` which you can run to start the app.
+This will create a `build` folder and inside it you will find the executable file `ca_app` which you can run to start the app.
 
 ```bash
 ./build/ca_app

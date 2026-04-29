@@ -4,7 +4,7 @@
 #include "core/rule_registry.hpp"
 #include <array>
 
-inline constexpr const char* CLEARING_RULE_NAME = "Clearing Rule";
+inline constexpr const char* SHAPE_ENFORCEMENT_RULE = "Shape Enforcement";
 
 // J = wildcard means "don't care" in pattern matching
 constexpr uint8_t J = 2;
@@ -45,15 +45,15 @@ constexpr std::array<std::array<uint8_t, 8>, 4> moore_only_corners_clearing_conf
 }};
 
 // Rule that removes "invalid" cells based on neighborhood patterns currently the pattern is tailored to preserve only shapes that could represent rectangle
-class ClearingRule: public Rule {
+class ShapeEnforcement: public Rule {
 public:
-  static ClearingRule& getInstance() {
-    static ClearingRule instance;
+  static ShapeEnforcement& getInstance() {
+    static ShapeEnforcement instance;
     return instance;
   }
   
-  ClearingRule() = default;
-  ~ClearingRule() override = default;
+  ShapeEnforcement() = default;
+  ~ShapeEnforcement() override = default;
 
   // basic version not used
   uint8_t apply(uint8_t current_state, std::vector<uint8_t> neighbours) const override;
@@ -64,8 +64,8 @@ public:
   std::string getName() const override;
 
   // Auto-register for UI
-  inline static AutoRegisterRule<ClearingRule> auto_register_clearing{
-    CLEARING_RULE_NAME,
-    "Rule that kills any cell that is not part of a line or corner"
+  inline static AutoRegisterRule<ShapeEnforcement> auto_register{
+    SHAPE_ENFORCEMENT_RULE,
+    "Rule that removes cells that don't fit specific neighborhood patterns, enforcing structured shapes."
   };
 };

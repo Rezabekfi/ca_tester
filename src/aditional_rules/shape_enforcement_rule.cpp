@@ -1,13 +1,13 @@
-#include "clearing_rule.hpp"
+#include "shape_enforcement_rule.hpp"
 #include "core/grid.hpp"
 
 // context free version not used
-uint8_t ClearingRule::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
+uint8_t ShapeEnforcement::apply(uint8_t current_state, std::vector<uint8_t> neighbours) const {
   return current_state;
 }
 
 // Keeps cells only if their local shape matches a known line/corner pattern meaning it preserves shapes that could represent rectangles (used for thesis)
-uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
+uint8_t ShapeEnforcement::apply(uint8_t current_state, const RuleContext& ctx, const std::vector<uint8_t>& neighbours) const {
   if (current_state == 0) { 
     return 0; // dead stays dead
   }
@@ -53,6 +53,6 @@ uint8_t ClearingRule::apply(uint8_t current_state, const RuleContext& ctx, const
   return current_state;
 }
 
-std::string ClearingRule::getName() const {
-    return CLEARING_RULE_NAME;
+std::string ShapeEnforcement::getName() const {
+    return SHAPE_ENFORCEMENT_RULE;
 }

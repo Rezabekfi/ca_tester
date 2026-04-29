@@ -2,13 +2,13 @@
 
 #include "core/rule.hpp"
 #include "core/rule_registry.hpp"
-#include "clearing_rule.hpp"
+#include "shape_enforcement_rule.hpp" // for J wildcard and pattern matching
 #include <array>
 
 inline constexpr const char* EDGE_DETECTION_RULE_NAME = "Edge Detection Rule";
 
-// Pattern joker reused from clearing rule
-// J means "don't care" in neighborhood configs
+// Pattern joker reused from shape enforcement rule for flexible matching
+// // J means "don't care" in neighborhood configs
 
 // Cell bit layout:
 // b0 = alive/dead, b2 = vertical edge, b3 = horizontal edge

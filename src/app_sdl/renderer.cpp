@@ -236,7 +236,8 @@ void Renderer::renderNeighborhoodSettings() {
 // This is an issue 
 void Renderer::renderRuleSettings() {
   auto list = RuleRegistry::getInstance().list();
-  const char* current_rule = engine_.getRule().getName().c_str();
+  std::string current_rule_name = engine_.getRule().getName();
+  const char* current_rule = current_rule_name.c_str();
   const bool disable = !paused_;
 
   if (disable) ImGui::BeginDisabled();
@@ -331,7 +332,7 @@ void Renderer::renderGridSettings() {
     ImGui::EndDisabled();
   }
 
-  ImGui::Text("Mouse over cell: (%d, %d)", hovered_cell_x_, hovered_cell_y_);
+  ImGui::Text("Mouse over cell: (%zu, %zu)", hovered_cell_x_, hovered_cell_y_);
 }
 
 // Draws grid and handles paused editing
